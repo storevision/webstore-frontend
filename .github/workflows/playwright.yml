@@ -40,6 +40,10 @@ jobs:
       run: yarn playwright install --with-deps
       if: steps.cache-playwright.outputs.cache-hit != 'true'
 
+    - name: Install Playwright Browsers
+      run: yarn playwright install-deps
+      if: steps.cache-playwright.outputs.cache-hit == 'true'
+
     - name: Run Playwright tests
       run: yarn playwright test
 
