@@ -144,7 +144,11 @@ const Navbar: FC = () => {
                                 <Divider orientation="vertical" flexItem />
                                 <Stack direction="row" spacing={1}>
                                     {navigation.map(item => (
-                                        <Link href={item.href} key={item.title}>
+                                        <Link
+                                            href={item.href}
+                                            key={item.title}
+                                            data-testid={`nav-${item.title.toLowerCase()}`}
+                                        >
                                             <NavButton
                                                 variant={
                                                     pathname === item.href
