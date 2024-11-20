@@ -32,7 +32,6 @@ jobs:
         key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}-${{ hashFiles('yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}-
-          ${{ runner.os }}-playwright-
 
     - name: Install dependencies
       run: yarn install --frozen-lockfile --non-interactive

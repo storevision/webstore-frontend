@@ -11,6 +11,9 @@ test('should navigate to the about page', async ({ page }) => {
     // assert the URL is correct
     await expect(page).toHaveURL('http://localhost:3000/about');
 
+    // assert the 404 page is not visible
+    await expect(page.getByText('404')).not.toBeVisible();
+
     // assert the page title is correct
     await expect(page.title()).resolves.toContain('About');
 });
@@ -25,6 +28,9 @@ test('should navigate to the home page', async ({ page }) => {
 
     // assert the URL is correct
     await expect(page).toHaveURL('http://localhost:3000/');
+
+    // assert the 404 page is not visible
+    await expect(page.getByText('404')).not.toBeVisible();
 
     // assert the page title is correct
     await expect(page.title()).resolves.toContain('Home');
