@@ -25,6 +25,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -87,7 +88,7 @@ const Navbar: FC = props => {
 
     return (
         <HideOnScroll {...props}>
-            <AppBar>
+            <AppBar position="static">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {isMobile ? (
@@ -109,34 +110,48 @@ const Navbar: FC = props => {
                                 </Typography>
                             </Box>
                         ) : (
-                            <Avatar style={{ marginRight: theme.spacing(2) }}>
-                                <Image
-                                    src={Logo}
-                                    alt="Logo"
-                                    loading="lazy"
-                                    width={100}
-                                    height={100}
-                                    style={{ width: '100%', height: 'auto' }}
-                                />
-                            </Avatar>
+                            <Box display="flex" alignItems="center" gap={2}>
+                                <Box display="flex" alignItems="center" gap={1}>
+                                    <Avatar>
+                                        <Image
+                                            src={Logo}
+                                            alt="Logo"
+                                            loading="lazy"
+                                            width={100}
+                                            height={100}
+                                            style={{
+                                                width: '100%',
+                                                height: 'auto',
+                                            }}
+                                        />
+                                    </Avatar>
+                                    <Typography
+                                        variant="h6"
+                                        color={
+                                            theme.palette.primary.contrastText
+                                        }
+                                    >
+                                        {pageName}
+                                    </Typography>
+                                </Box>
+                                <Divider orientation="vertical" flexItem />
+                                <Stack direction="row" spacing={1}>
+                                    {navigation.map(item => (
+                                        <Link href={item.href} key={item.title}>
+                                            <NavButton
+                                                variant={
+                                                    pathname === item.href
+                                                        ? 'outlined'
+                                                        : 'text'
+                                                }
+                                            >
+                                                {item.title}
+                                            </NavButton>
+                                        </Link>
+                                    ))}
+                                </Stack>
+                            </Box>
                         )}
-                        {!isMobile ? (
-                            <Stack direction="row" spacing={2}>
-                                {navigation.map(item => (
-                                    <Link href={item.href} key={item.title}>
-                                        <NavButton
-                                            variant={
-                                                pathname === item.href
-                                                    ? 'outlined'
-                                                    : 'text'
-                                            }
-                                        >
-                                            {item.title}
-                                        </NavButton>
-                                    </Link>
-                                ))}
-                            </Stack>
-                        ) : null}
                     </Toolbar>
                 </Container>
                 <Drawer

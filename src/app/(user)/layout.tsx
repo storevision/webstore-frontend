@@ -7,7 +7,9 @@ import Box from '@mui/material/Box';
 const Layout: FC<PropsWithChildren> = ({ children }) => (
     <Box>
         <Navbar />
-        {children}
+        <Box mt={1} marginX={1}>
+            {children}
+        </Box>
     </Box>
 );
 

@@ -20,7 +20,10 @@ const interFont = Inter({
 });
 
 export const metadata: Metadata = {
-    title: pageName,
+    title: {
+        template: `%s | ${pageName}`,
+        default: pageName,
+    },
     description: pageDescription,
 };
 
