@@ -24,4 +24,6 @@ const navigation: Navigation = [
     },
 ];
 
+export const homeLink = navigation[0].href;
+
 export default navigation;

@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import Logo from '@public/logo.png';
 
 import { pageName } from '@/constants';
-import navigation from '@/constants/navigation';
+import navigation, { homeLink } from '@/constants/navigation';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import type { SlideProps } from '@mui/material';
@@ -71,7 +71,7 @@ const HideOnScroll: FC<Pick<SlideProps, 'children'>> = ({ children }) => {
     );
 };
 
-const Navbar: FC = props => {
+const Navbar: FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const pathname = usePathname();
@@ -87,7 +87,7 @@ const Navbar: FC = props => {
     };
 
     return (
-        <HideOnScroll {...props}>
+        <HideOnScroll>
             <AppBar position="static">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
@@ -111,29 +111,36 @@ const Navbar: FC = props => {
                             </Box>
                         ) : (
                             <Box display="flex" alignItems="center" gap={2}>
-                                <Box display="flex" alignItems="center" gap={1}>
-                                    <Avatar>
-                                        <Image
-                                            src={Logo}
-                                            alt="Logo"
-                                            loading="lazy"
-                                            width={100}
-                                            height={100}
-                                            style={{
-                                                width: '100%',
-                                                height: 'auto',
-                                            }}
-                                        />
-                                    </Avatar>
-                                    <Typography
-                                        variant="h6"
-                                        color={
-                                            theme.palette.primary.contrastText
-                                        }
+                                <Link href={homeLink}>
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        gap={1}
                                     >
-                                        {pageName}
-                                    </Typography>
-                                </Box>
+                                        <Avatar>
+                                            <Image
+                                                src={Logo}
+                                                alt="Logo"
+                                                loading="lazy"
+                                                width={100}
+                                                height={100}
+                                                style={{
+                                                    width: '100%',
+                                                    height: 'auto',
+                                                }}
+                                            />
+                                        </Avatar>
+                                        <Typography
+                                            variant="h6"
+                                            color={
+                                                theme.palette.primary
+                                                    .contrastText
+                                            }
+                                        >
+                                            {pageName}
+                                        </Typography>
+                                    </Box>
+                                </Link>
                                 <Divider orientation="vertical" flexItem />
                                 <Stack direction="row" spacing={1}>
                                     {navigation.map(item => (
