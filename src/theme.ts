@@ -4,7 +4,8 @@ import { pagePrimaryColor, pageSecondaryColor } from '@/constants';
 
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+const baseTheme = createTheme({
+    cssVariables: true,
     typography: {
         fontFamily: 'var(--font-inter)',
     },
@@ -27,7 +28,24 @@ const theme = createTheme({
             dark: '#000000',
             contrastText: '#ffffff',
         },
+        background: {
+            default: '#f5f5f5',
+            paper: '#ffffff',
+        },
     },
 });
+
+const theme = createTheme(
+    {
+        components: {
+            MuiButton: {
+                styleOverrides: {
+                    root: { borderRadius: baseTheme.shape.borderRadius * 2 },
+                },
+            },
+        },
+    },
+    baseTheme,
+);
 
 export default theme;

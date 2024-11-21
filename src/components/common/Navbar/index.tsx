@@ -2,64 +2,32 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Logo from '@public/logo.png';
+
+import MobileNavbar from '@/components/common/MobileNavbar';
+import NavbarAvatar from '@/components/common/NavbarAvatar';
+import NavButton from '@/components/common/NavButton';
 
 import { pageName } from '@/constants';
 import navigation, { homeLink } from '@/constants/navigation';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import type { SlideProps } from '@mui/material';
-import {
-    styled,
-    useMediaQuery,
-    useScrollTrigger,
-    useTheme,
-} from '@mui/material';
+import { useMediaQuery, useScrollTrigger, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-
-const NavButton = styled(Button)(({ theme }) => ({
-    // styles for outlined
-    borderWidth: 2,
-    borderRadius: theme.shape.borderRadius,
-
-    '&.MuiButton-outlined': {
-        borderColor: theme.palette.primary.contrastText,
-        color: theme.palette.primary.contrastText,
-        fontWeight: theme.typography.fontWeightBold,
-    },
-    // styles for text
-    '&.MuiButton-text': {
-        color: theme.palette.primary.contrastText,
-        fontWeight: theme.typography.fontWeightBold,
-    },
-
-    // hover
-    '&:hover': {
-        backgroundColor: theme.palette.white.light,
-        color: theme.palette.getContrastText(theme.palette.white.light),
-    },
-}));
+import useIsMobile from '@/hooks/useIsMobile';
 
 const HideOnScroll: FC<Pick<SlideProps, 'children'>> = ({ children }) => {
     const trigger = useScrollTrigger();
@@ -73,18 +41,15 @@ const HideOnScroll: FC<Pick<SlideProps, 'children'>> = ({ children }) => {
 
 const Navbar: FC = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const pathname = usePathname();
+    const isMobile = useIsMobile();
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = (): void => {
-        setAnchorEl(null);
-    };
+    useEffect(() => {
+        if (!isMobile) {
+            setDrawerOpen(false);
+        }
+    }, [isMobile]);
 
     return (
         <HideOnScroll>
@@ -94,7 +59,7 @@ const Navbar: FC = () => {
                         {isMobile ? (
                             <Box display="flex" alignItems="center" gap={1}>
                                 <IconButton
-                                    onClick={handleOpenNavMenu}
+                                    onClick={() => setDrawerOpen(true)}
                                     style={{
                                         color: theme.palette.primary
                                             .contrastText,
@@ -110,14 +75,19 @@ const Navbar: FC = () => {
                                 </Typography>
                             </Box>
                         ) : (
-                            <Box display="flex" alignItems="center" gap={2}>
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                gap={2}
+                                flex={1}
+                            >
                                 <Link href={homeLink}>
                                     <Box
                                         display="flex"
                                         alignItems="center"
                                         gap={1}
                                     >
-                                        <Avatar>
+                                        <NavbarAvatar>
                                             <Image
                                                 src={Logo}
                                                 alt="Logo"
@@ -129,98 +99,51 @@ const Navbar: FC = () => {
                                                     height: 'auto',
                                                 }}
                                             />
-                                        </Avatar>
+                                        </NavbarAvatar>
                                         <Typography
                                             variant="h6"
                                             color={
                                                 theme.palette.primary
                                                     .contrastText
                                             }
+                                            fontWeight="bold"
                                         >
                                             {pageName}
                                         </Typography>
                                     </Box>
                                 </Link>
                                 <Divider orientation="vertical" flexItem />
-                                <Stack direction="row" spacing={1}>
-                                    {navigation.map(item => (
-                                        <Link
-                                            href={item.href}
-                                            key={item.title}
-                                            data-testid={`nav-${item.title.toLowerCase()}`}
-                                        >
-                                            <NavButton
-                                                variant={
-                                                    pathname === item.href
-                                                        ? 'outlined'
-                                                        : 'text'
-                                                }
+                                <Stack direction="row" spacing={1} flex={1}>
+                                    {navigation.map(
+                                        ({ href, title, Icon, align }) => (
+                                            <Link
+                                                href={href}
+                                                key={title}
+                                                data-testid={`nav-${title.toLowerCase()}`}
+                                                style={{
+                                                    marginLeft:
+                                                        align === 'right'
+                                                            ? 'auto'
+                                                            : undefined,
+                                                }}
                                             >
-                                                {item.title}
-                                            </NavButton>
-                                        </Link>
-                                    ))}
+                                                <NavButton
+                                                    Icon={Icon}
+                                                    title={title}
+                                                    href={href}
+                                                />
+                                            </Link>
+                                        ),
+                                    )}
                                 </Stack>
                             </Box>
                         )}
                     </Toolbar>
                 </Container>
-                <Drawer
-                    anchor="left"
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseNavMenu}
-                >
-                    <Box sx={{ width: 250 }} role="presentation">
-                        <Box
-                            display="flex"
-                            flexDirection="row"
-                            alignItems="center"
-                            gap={3}
-                            width="100%"
-                            padding={1}
-                            bgcolor={theme.palette.primary.main}
-                            boxShadow={theme.shadows[3]}
-                        >
-                            <Avatar>
-                                <Image
-                                    src={Logo}
-                                    alt="Logo"
-                                    loading="lazy"
-                                    width={100}
-                                    height={100}
-                                    style={{ width: '100%', height: 'auto' }}
-                                />
-                            </Avatar>
-                            <Typography
-                                variant="h6"
-                                align="center"
-                                color={theme.palette.primary.contrastText}
-                            >
-                                {pageName}
-                            </Typography>
-                        </Box>
-                        <List>
-                            {navigation.map(item => (
-                                <Link href={item.href} key={item.title}>
-                                    <ListItem key={item.title} disablePadding>
-                                        <ListItemButton
-                                            onClick={handleCloseNavMenu}
-                                        >
-                                            {item.icon ? (
-                                                <ListItemIcon>
-                                                    <item.icon />
-                                                </ListItemIcon>
-                                            ) : null}
-                                            <ListItemText
-                                                primary={item.title}
-                                            />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </Link>
-                            ))}
-                        </List>
-                    </Box>
-                </Drawer>
+                <MobileNavbar
+                    open={drawerOpen}
+                    onClose={() => setDrawerOpen(false)}
+                />
             </AppBar>
         </HideOnScroll>
     );

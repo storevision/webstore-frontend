@@ -8,7 +8,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => (
     <Box>
         <Navbar />
         <Box mt={1} marginX={1}>
-            {children}
+            <main>{children}</main>
         </Box>
     </Box>
 );

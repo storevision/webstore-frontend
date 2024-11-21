@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import type { JSX } from 'react';
 
 export const metadata: Metadata = {
-    title: 'Home',
+    title: 'Checkout',
 };
 
-export default function Home(): JSX.Element {
-    return <main>My content</main>;
+export default function Checkout(): JSX.Element {
+    return <main>Checkout</main>;
 }

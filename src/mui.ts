@@ -5,11 +5,13 @@ declare module '@mui/material/styles' {
     interface Palette {
         white: PaletteColor;
         black: PaletteColor;
+        light: PaletteColor;
     }
 
     interface PaletteOptions {
         white?: PaletteColor;
         black?: PaletteColor;
+        light?: PaletteColor;
     }
 }
 
@@ -17,5 +19,6 @@ declare module '@mui/material/Button' {
     interface ButtonPropsColorOverrides {
         white: true;
         black: true;
+        light: true;
     }
 }

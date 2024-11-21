@@ -8,3 +8,24 @@ a {
     color-scheme: dark;
   }
 }
+
+/*
+.slick-dots li button:before  {
+  font-size: 10px;
+}
+
+.slick-dots li.slick-active button:before {
+  font-size: 15px;
+}*/
+
+.slick-track {
+  display: flex !important;
+}
+
+.slick-slide {
+  height: inherit !important;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: var(--mui-palette-primary-main) !important;
+}
