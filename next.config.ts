@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     env: {
         API_BASE_URL: apiBaseUrl,
     },
+    output: 'standalone',
     async rewrites() {
         return [
             {
