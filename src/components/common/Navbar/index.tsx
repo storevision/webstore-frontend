@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Logo from '@public/logo.png';
 
@@ -12,22 +12,30 @@ import MobileNavbar from '@/components/common/MobileNavbar';
 import NavbarAvatar from '@/components/common/NavbarAvatar';
 import NavButton from '@/components/common/NavButton';
 
-import { pageName } from '@/constants';
-import navigation, { homeLink } from '@/constants/navigation';
+import useIsMobile from '@/hooks/useIsMobile';
 
+import { pageName } from '@/constants';
+import navigation, { homeLink, userPages } from '@/constants/navigation';
+import { useUserStore } from '@/providers/userStoreProvider';
+
+import ProfileIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import type { SlideProps } from '@mui/material';
-import { useMediaQuery, useScrollTrigger, useTheme } from '@mui/material';
+import { useScrollTrigger, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Slide from '@mui/material/Slide';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import useIsMobile from '@/hooks/useIsMobile';
 
 const HideOnScroll: FC<Pick<SlideProps, 'children'>> = ({ children }) => {
     const trigger = useScrollTrigger();
@@ -42,8 +50,20 @@ const HideOnScroll: FC<Pick<SlideProps, 'children'>> = ({ children }) => {
 const Navbar: FC = () => {
     const theme = useTheme();
     const isMobile = useIsMobile();
+    const user = useUserStore(store => store.user);
+    const doLogout = useUserStore(store => store.doLogout);
 
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+
+    const [userAnchorEl, setUserAnchorEl] = useState<HTMLElement | null>(null);
+
+    const handleClickUser = (event: React.MouseEvent<HTMLElement>): void => {
+        setUserAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseUser = (): void => {
+        setUserAnchorEl(null);
+    };
 
     useEffect(() => {
         if (!isMobile) {
@@ -136,6 +156,28 @@ const Navbar: FC = () => {
                                         ),
                                     )}
                                 </Stack>
+                                <Divider orientation="vertical" flexItem />
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    marginLeft="auto"
+                                >
+                                    <NavbarAvatar
+                                        src="/undraw_profile_picture.svg"
+                                        radius={false}
+                                        onClick={handleClickUser}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                    <Typography
+                                        variant="body1"
+                                        color={
+                                            theme.palette.primary.contrastText
+                                        }
+                                    >
+                                        {user?.display_name}
+                                    </Typography>
+                                </Box>
                             </Box>
                         )}
                     </Toolbar>
@@ -144,6 +186,47 @@ const Navbar: FC = () => {
                     open={drawerOpen}
                     onClose={() => setDrawerOpen(false)}
                 />
+                <Menu
+                    open={Boolean(userAnchorEl)}
+                    anchorEl={userAnchorEl}
+                    onClose={handleCloseUser}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    style={{ marginTop: 4 }}
+                >
+                    <MenuItem style={{ display: !user ? 'none' : undefined }}>
+                        <ListItemIcon>
+                            <ProfileIcon />
+                        </ListItemIcon>
+                        <ListItemText>Profile</ListItemText>
+                    </MenuItem>
+                    <MenuItem
+                        onClick={doLogout}
+                        style={{ display: !user ? 'none' : undefined }}
+                    >
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                        <ListItemText>Logout</ListItemText>
+                    </MenuItem>
+                    <Link
+                        href={userPages.login}
+                        style={{ display: user ? 'none' : undefined }}
+                    >
+                        <MenuItem>
+                            <ListItemIcon>
+                                <ProfileIcon />
+                            </ListItemIcon>
+                            <ListItemText>Login</ListItemText>
+                        </MenuItem>
+                    </Link>
+                </Menu>
             </AppBar>
         </HideOnScroll>
     );

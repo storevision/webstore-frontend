@@ -1,9 +1,16 @@
 import { styled } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 
-const NavbarAvatar = styled(Avatar)(({ theme }) => ({
+export interface NavbarAvatarProps {
+    radius?: number | false;
+}
+
+const NavbarAvatar = styled(Avatar, {
+    shouldForwardProp: propName => propName !== 'radius',
+})<NavbarAvatarProps>(({ theme, radius }) => ({
     backgroundColor: theme.palette.white.main,
-    borderRadius: theme.shape.borderRadius * 3,
+    borderRadius:
+        radius === false ? undefined : theme.shape.borderRadius * (radius ?? 3),
     boxShadow: theme.shadows[3],
     '&:hover': {
         backgroundColor: theme.palette.white.dark,

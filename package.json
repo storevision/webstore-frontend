@@ -11,7 +11,8 @@
     "test": "jest --passWithNoTests",
     "test:ci": "jest --ci --passWithNoTests",
     "typecheck": "tsc --noEmit",
-    "generate": "openapi-typescript https://raw.githubusercontent.com/storevision/openapi-schema/refs/heads/main/swagger.json --output src/generated/schema.ts"
+    "generate": "openapi-typescript https://raw.githubusercontent.com/storevision/openapi-schema/refs/heads/main/swagger.json?t=$(date +%s) --output src/generated/schema.ts",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
@@ -20,15 +21,23 @@
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
     "@mui/material-nextjs": "^6.1.7",
+    "deepmerge": "^4.3.1",
+    "email-validator": "^2.0.4",
     "next": "15.0.3",
+    "openapi-fetch": "^0.13.3",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-slick": "^0.30.2",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "type-fest": "^4.30.0",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@playwright/test": "^1.49.0",
+    "@types/deepmerge": "^2.2.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

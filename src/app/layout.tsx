@@ -4,7 +4,10 @@ import { Inter } from 'next/font/google';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 
+import { getUser } from '@/app/_api/users';
+
 import { pageDescription, pageName } from '@/constants';
+import { UserStoreProvider } from '@/providers/userStoreProvider';
 import theme from '@/theme';
 
 import './globals.css';
@@ -27,17 +30,24 @@ export const metadata: Metadata = {
     description: pageDescription,
 };
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => (
-    <html lang="en">
-        <body className={`${interFont.variable}`}>
-            <AppRouterCacheProvider>
-                <ThemeProvider theme={theme}>
-                    <CssBaseline enableColorScheme />
-                    {children}
-                </ThemeProvider>
-            </AppRouterCacheProvider>
-        </body>
-    </html>
-);
+const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
+    const userResponse = await getUser();
+    const user = userResponse.success ? userResponse.data : undefined;
+
+    return (
+        <html lang="en">
+            <body className={`${interFont.variable}`}>
+                <AppRouterCacheProvider>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline enableColorScheme />
+                        <UserStoreProvider userState={{ user }}>
+                            {children}
+                        </UserStoreProvider>
+                    </ThemeProvider>
+                </AppRouterCacheProvider>
+            </body>
+        </html>
+    );
+};
 
 export default RootLayout;

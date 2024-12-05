@@ -5,7 +5,6 @@ import { pagePrimaryColor, pageSecondaryColor } from '@/constants';
 import { createTheme } from '@mui/material/styles';
 
 const baseTheme = createTheme({
-    cssVariables: true,
     typography: {
         fontFamily: 'var(--font-inter)',
     },
@@ -41,6 +40,14 @@ const theme = createTheme(
             MuiButton: {
                 styleOverrides: {
                     root: { borderRadius: baseTheme.shape.borderRadius * 2 },
+                },
+            },
+            MuiFilledInput: {
+                styleOverrides: {
+                    root: {
+                        borderTopLeftRadius: baseTheme.shape.borderRadius * 2,
+                        borderTopRightRadius: baseTheme.shape.borderRadius * 2,
+                    },
                 },
             },
         },

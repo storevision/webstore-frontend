@@ -2,12 +2,16 @@ import type { Metadata } from 'next';
 
 import type { FC } from 'react';
 
+import { getCategories } from '@/app/_api/categories';
+import { getProducts } from '@/app/_api/products';
+
 import ProductSlider from '@/components/products/ProductSlider';
 
-import { getCategories } from '@/utils/api/categories';
-import { getProducts, splitProductsByCategory } from '@/utils/api/products';
+import { splitProductsByCategory } from '@/utils/helpers';
 
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
@@ -15,7 +19,7 @@ export const metadata: Metadata = {
     title: 'Home',
 };
 
-const Home: FC = async () => {
+const HomePage: FC = async () => {
     const productsResponse = await getProducts();
     const categoriesResponse = await getCategories();
 
@@ -35,14 +39,24 @@ const Home: FC = async () => {
                     color="primary.contrastText"
                     bgcolor="white.main"
                 >
-                    <Typography
-                        variant="h5"
-                        fontWeight="bold"
-                        marginBottom={1}
-                        marginX={1}
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        mb={1}
                     >
-                        Products in: {category}
-                    </Typography>
+                        <Typography variant="h5" fontWeight="bold" marginX={1}>
+                            Products in: {category}
+                        </Typography>
+                        <Button
+                            endIcon={<ArrowForwardIcon />}
+                            variant="text"
+                            color="primary"
+                            size="small"
+                        >
+                            View all
+                        </Button>
+                    </Box>
                     <ProductSlider products={products} />
                 </Box>
             ))}
@@ -50,4 +64,4 @@ const Home: FC = async () => {
     );
 };
 
-export default Home;
+export default HomePage;

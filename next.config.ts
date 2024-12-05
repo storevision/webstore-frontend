@@ -10,7 +10,7 @@ if (!apiBaseUrl) {
 const nextConfig: NextConfig = {
     /* config options here */
     reactStrictMode: true,
-    publicRuntimeConfig: {
+    env: {
         API_BASE_URL: apiBaseUrl,
     },
     async rewrites() {
