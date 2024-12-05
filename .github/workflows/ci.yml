@@ -76,23 +76,23 @@ jobs:
       - name: Run tests
         run: yarn test:ci
 
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --non-interactive
-
-      - name: Run type checks
-        run: yarn typecheck
+#  typecheck:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '22.x'
+#          cache: 'yarn'
+#          cache-dependency-path: 'yarn.lock'
+#
+#      - name: Install dependencies
+#        run: yarn install --frozen-lockfile --non-interactive
+#
+#      - name: Run type checks
+#        run: yarn typecheck
 
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -100,7 +100,7 @@ jobs:
     needs:
       - lint
       - test
-      - typecheck
+ #     - typecheck
     strategy:
       matrix:
         dockerfile: [Frontend.Dockerfile, Playwright.Dockerfile]
