@@ -5,6 +5,7 @@ import { pagePrimaryColor, pageSecondaryColor } from '@/constants';
 import { createTheme } from '@mui/material/styles';
 
 const baseTheme = createTheme({
+    cssVariables: true,
     typography: {
         fontFamily: 'var(--font-inter)',
     },
