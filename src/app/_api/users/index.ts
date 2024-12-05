@@ -4,7 +4,7 @@ import type { RequestBody } from '@/utils/api';
 import api from '@/utils/api';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const getUser = async () => {
+const pGetUser = async () => {
     const cookie = await getCookies();
 
     const { data, error } = await api.GET('/users/info', {
@@ -20,12 +20,14 @@ export const getUser = async () => {
     return data;
 };
 
-export type GetUserResponse = Awaited<ReturnType<typeof getUser>>;
+export type GetUserResponse = Awaited<ReturnType<typeof pGetUser>> | undefined;
+
+export const getUser: () => Promise<GetUserResponse> = pGetUser;
 
 export type LoginArgs = RequestBody<'/users/login'>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const login = async (body: LoginArgs) => {
+const pLogin = async (body: LoginArgs) => {
     const { data, error } = await api.POST('/users/login', {
         body,
     });
@@ -37,12 +39,14 @@ export const login = async (body: LoginArgs) => {
     return data;
 };
 
-export type LoginResponse = Awaited<ReturnType<typeof login>>;
+export type LoginResponse = Awaited<ReturnType<typeof pLogin>> | undefined;
+
+export const login: (body: LoginArgs) => Promise<LoginResponse> = pLogin;
 
 export type RegisterArgs = RequestBody<'/users/register'>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const register = async (body: RegisterArgs) => {
+const pRegister = async (body: RegisterArgs) => {
     const { data, error } = await api.POST('/users/register', {
         body,
     });
@@ -54,10 +58,15 @@ export const register = async (body: RegisterArgs) => {
     return data;
 };
 
-export type RegisterResponse = Awaited<ReturnType<typeof register>>;
+export type RegisterResponse =
+    | Awaited<ReturnType<typeof pRegister>>
+    | undefined;
+
+export const register: (body: RegisterArgs) => Promise<RegisterResponse> =
+    pRegister;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const logout = async () => {
+const pLogout = async () => {
     const { data, error } = await api.POST('/users/logout');
 
     if (error) {
@@ -67,4 +76,6 @@ export const logout = async () => {
     return data;
 };
 
-export type LogoutResponse = Awaited<ReturnType<typeof logout>>;
+export type LogoutResponse = Awaited<ReturnType<typeof pLogout>> | undefined;
+
+export const logout: () => Promise<LogoutResponse> = pLogout;

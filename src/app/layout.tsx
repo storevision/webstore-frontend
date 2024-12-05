@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
     const userResponse = await getUser();
-    const user = userResponse.success ? userResponse.data : undefined;
+    const user = userResponse?.success ? userResponse.data : undefined;
 
     return (
         <html lang="en">

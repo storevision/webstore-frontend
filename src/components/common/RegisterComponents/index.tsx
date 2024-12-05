@@ -79,9 +79,9 @@ const RegisterComponents: FC = () => {
                 email,
                 password,
             });
-            if (!response.success) {
-                console.error('Login error:', response.error);
-                setGenericError(response.error);
+            if (typeof response === 'undefined' || !response.success) {
+                console.error('Login error:', response?.error);
+                setGenericError(response?.error ?? 'An error occurred.');
                 return;
             }
 

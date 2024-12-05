@@ -35,7 +35,7 @@ export const createUserStore = (initialState?: PartialDeep<UserState>) =>
         doLogin: async args => {
             const response = await login(args);
 
-            if (response.success) {
+            if (response?.success) {
                 set({ user: response.data });
             }
 
@@ -44,16 +44,16 @@ export const createUserStore = (initialState?: PartialDeep<UserState>) =>
         doLogout: async () => {
             const response = await logout();
 
-            if (response.success) {
+            if (response?.success) {
                 set({ user: undefined });
             }
 
-            return response.success;
+            return response?.success ?? false;
         },
         doRegister: async args => {
             const response = await register(args);
 
-            if (response.success) {
+            if (response?.success) {
                 set({ user: response.data });
             }
 

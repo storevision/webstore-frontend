@@ -52,9 +52,9 @@ const LoginComponents: FC = () => {
         try {
             setLoading(true);
             const response = await doLogin({ email, password, keepLoggedIn });
-            if (!response.success) {
-                console.error('Login error:', response.error);
-                setError(response.error);
+            if (typeof response === 'undefined' || !response.success) {
+                console.error('Login error:', response?.error);
+                setError(response?.error ?? 'An error occurred.');
                 return;
             }
 
