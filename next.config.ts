@@ -14,6 +14,15 @@ const nextConfig: NextConfig = {
         API_BASE_URL: apiBaseUrl,
     },
     output: 'standalone',
+    compiler:
+        process.env.NODE_ENV === 'production'
+            ? {
+                  removeConsole: {
+                      exclude: ['dir'],
+                  },
+                  reactRemoveProperties: true,
+              }
+            : {},
     async rewrites() {
         return [
             {
