@@ -50,7 +50,7 @@ jobs:
         with:
           flavor: |
             latest=true
-          images: ${{ steps.dockerfile.outputs.image_name }}
+          images: ${{ env.image_name }}
 
       - name: Build and push Docker image
         id: push
