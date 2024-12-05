@@ -38,7 +38,10 @@ jobs:
         id: dockerfile
         run: |
           name=$(echo ${{ matrix.dockerfile }} | cut -d'.' -f1)
-          image_name=commanderred42/webstore-$name
+          name=$(echo $name | tr '[:upper:]' '[:lower:]')
+          echo "Name: $name"
+          image_name="commanderred42/webstore-$name"
+          echo "Image Name: $image_name"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
