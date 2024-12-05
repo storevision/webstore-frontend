@@ -70,7 +70,7 @@ const LoginComponents: FC = () => {
     };
 
     return (
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm onSubmit={handleSubmit} data-testid="login-form">
             <TextField
                 fullWidth
                 variant="filled"
@@ -82,6 +82,11 @@ const LoginComponents: FC = () => {
                     setError('');
                 }}
                 required
+                slotProps={{
+                    htmlInput: {
+                        'data-testid': 'email-input',
+                    },
+                }}
             />
             <TextField
                 fullWidth
@@ -94,17 +99,27 @@ const LoginComponents: FC = () => {
                     setError('');
                 }}
                 required
+                slotProps={{
+                    htmlInput: {
+                        'data-testid': 'password-input',
+                    },
+                }}
             />
             <FormControlLabel
                 control={
                     <Checkbox
                         onChange={e => setKeepLoggedIn(e.target.checked)}
                         checked={keepLoggedIn}
+                        data-testid="keep-logged-in-checkbox"
                     />
                 }
                 label="Keep me logged in"
             />
-            {error ? <FormHelperText error>{error}</FormHelperText> : null}
+            {error ? (
+                <FormHelperText error data-testid="error-message">
+                    {error}
+                </FormHelperText>
+            ) : null}
             <Button
                 type="submit"
                 variant="contained"
@@ -112,6 +127,7 @@ const LoginComponents: FC = () => {
                 style={{ marginTop: 8 }}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
                 disabled={loading}
+                data-testid="login-button"
             >
                 Login
             </Button>
@@ -124,6 +140,7 @@ const LoginComponents: FC = () => {
                 fullWidth
                 disabled={loading}
                 onClick={() => router.push(userPages.register)}
+                data-testid="register-button"
             >
                 Register Now
             </Button>

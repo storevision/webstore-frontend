@@ -98,7 +98,7 @@ const RegisterComponents: FC = () => {
     };
 
     return (
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm onSubmit={handleSubmit} data-testid="register-form">
             <TextField
                 fullWidth
                 variant="filled"
@@ -110,6 +110,11 @@ const RegisterComponents: FC = () => {
                     setError('');
                 }}
                 required
+                slotProps={{
+                    htmlInput: {
+                        'data-testid': 'display-name-input',
+                    },
+                }}
             />
             <TextField
                 fullWidth
@@ -125,6 +130,11 @@ const RegisterComponents: FC = () => {
                 required
                 error={!!emailError}
                 helperText={emailError}
+                slotProps={{
+                    htmlInput: {
+                        'data-testid': 'email-input',
+                    },
+                }}
             />
             <TextField
                 fullWidth
@@ -154,6 +164,9 @@ const RegisterComponents: FC = () => {
                                 )}
                             </IconButton>
                         ),
+                    },
+                    htmlInput: {
+                        'data-testid': 'password-input',
                     },
                 }}
             />
@@ -188,10 +201,15 @@ const RegisterComponents: FC = () => {
                             </IconButton>
                         ),
                     },
+                    htmlInput: {
+                        'data-testid': 'password-confirmation-input',
+                    },
                 }}
             />
             {genericError ? (
-                <FormHelperText error>{genericError}</FormHelperText>
+                <FormHelperText error data-testid="generic-error-message">
+                    {genericError}
+                </FormHelperText>
             ) : null}
             <Button
                 type="submit"
@@ -200,6 +218,7 @@ const RegisterComponents: FC = () => {
                 style={{ marginTop: 8 }}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
                 disabled={loading}
+                data-testid="register-button"
             >
                 Register
             </Button>

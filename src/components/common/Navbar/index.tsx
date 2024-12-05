@@ -168,12 +168,14 @@ const Navbar: FC = () => {
                                         radius={false}
                                         onClick={handleClickUser}
                                         style={{ cursor: 'pointer' }}
+                                        data-testid="nav-user"
                                     />
                                     <Typography
                                         variant="body1"
                                         color={
                                             theme.palette.primary.contrastText
                                         }
+                                        data-testid="nav-username"
                                     >
                                         {user?.display_name}
                                     </Typography>
@@ -199,16 +201,23 @@ const Navbar: FC = () => {
                         horizontal: 'center',
                     }}
                     style={{ marginTop: 4 }}
+                    data-testid="nav-user-menu"
                 >
-                    <MenuItem style={{ display: !user ? 'none' : undefined }}>
+                    <MenuItem
+                        style={{ display: !user ? 'none' : undefined }}
+                        data-testid="nav-profile"
+                    >
                         <ListItemIcon>
                             <ProfileIcon />
                         </ListItemIcon>
                         <ListItemText>Profile</ListItemText>
                     </MenuItem>
                     <MenuItem
-                        onClick={doLogout}
+                        onClick={() => {
+                            doLogout().then(() => handleCloseUser());
+                        }}
                         style={{ display: !user ? 'none' : undefined }}
+                        data-testid="nav-logout"
                     >
                         <ListItemIcon>
                             <LogoutIcon />
@@ -218,6 +227,7 @@ const Navbar: FC = () => {
                     <Link
                         href={userPages.login}
                         style={{ display: user ? 'none' : undefined }}
+                        data-testid="nav-login"
                     >
                         <MenuItem>
                             <ListItemIcon>
