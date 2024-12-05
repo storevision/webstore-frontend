@@ -12,7 +12,7 @@
     "test:ci": "jest --ci --passWithNoTests",
     "test:playwright": "playwright test",
     "test:playwright:ci": "playwright test",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit --project tsconfig.json",
     "generate": "openapi-typescript https://raw.githubusercontent.com/storevision/openapi-schema/refs/heads/main/swagger.json?t=$(date +%s) --output src/generated/schema.ts",
     "postinstall": "patch-package"
   },
