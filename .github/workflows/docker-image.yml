@@ -19,6 +19,7 @@ jobs:
     strategy:
       matrix:
         dockerfile: [Frontend.Dockerfile, Playwright.Dockerfile]
+      fail-fast: false
     permissions:
       packages: write
       contents: read
