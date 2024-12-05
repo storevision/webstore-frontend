@@ -26,4 +26,4 @@ RUN rm -rf .env
 
 RUN yarn playwright install --with-deps
 
-CMD ["yarn", "test:playwright-ci"]
+CMD ["yarn", "test:playwright:ci"]
