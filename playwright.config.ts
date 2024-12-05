@@ -70,7 +70,6 @@ export default defineConfig({
         // },
     ],
 
-    /* Run nextjs dev server before starting the tests (only for CI) */
     webServer: {
         command: 'yarn dev',
         port: 3000,
