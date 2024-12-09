@@ -170,15 +170,34 @@ const Navbar: FC = () => {
                                         style={{ cursor: 'pointer' }}
                                         data-testid="nav-user"
                                     />
-                                    <Typography
-                                        variant="body1"
-                                        color={
-                                            theme.palette.primary.contrastText
-                                        }
-                                        data-testid="nav-username"
-                                    >
-                                        {user?.display_name}
-                                    </Typography>
+                                    {/* Doing padding like this for alignment is bad but i am lazy */}
+                                    <Box pt={0.5}>
+                                        <Typography
+                                            variant="body1"
+                                            fontWeight="bold"
+                                            lineHeight={1}
+                                            color={
+                                                theme.palette.primary
+                                                    .contrastText
+                                            }
+                                            data-testid="nav-username"
+                                        >
+                                            Hello,{' '}
+                                            {user?.display_name || 'user'}
+                                        </Typography>
+                                        {user ? (
+                                            <Typography
+                                                variant="body2"
+                                                color={
+                                                    theme.palette.primary
+                                                        .contrastText
+                                                }
+                                                data-testid="nav-email"
+                                            >
+                                                Account
+                                            </Typography>
+                                        ) : null}
+                                    </Box>
                                 </Box>
                             </Box>
                         )}
