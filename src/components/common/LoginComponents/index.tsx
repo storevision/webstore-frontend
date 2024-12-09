@@ -62,7 +62,9 @@ const LoginComponents: FC = () => {
 
             router.push(homeLink);
         } catch (err) {
-            console.error('Login error:', err);
+            if (err) {
+                console.error('Login error:', err);
+            }
             setError('An error occurred. Please try again later.');
         } finally {
             setLoading(false);

@@ -54,19 +54,31 @@ const RegisterComponents: FC = () => {
         setShowPassword(false);
         setShowRepeatPassword(false);
 
-        if (!email || !password || !name || !repeatPassword) {
+        const emailText = email.trim();
+        const passwordText = password.trim();
+        const nameText = name.trim();
+        const repeatPasswordText = repeatPassword.trim();
+
+        if (!emailText || !passwordText || !nameText || !repeatPasswordText) {
             setError('Please fill out all fields.');
             return;
         }
 
-        const emailValid = validateEmail(email);
+        const emailValid = validateEmail(emailText);
 
         if (!emailValid) {
             setEmailError('Please enter a valid email address.');
             return;
         }
 
-        if (password !== repeatPassword) {
+        const isPasswordValid = passwordText.length >= 8;
+
+        if (!isPasswordValid) {
+            setPasswordError('Password must be at least 8 characters long.');
+            return;
+        }
+
+        if (passwordText !== repeatPasswordText) {
             setPasswordError('Passwords do not match.');
             return;
         }
@@ -80,7 +92,7 @@ const RegisterComponents: FC = () => {
                 password,
             });
             if (typeof response === 'undefined' || !response.success) {
-                console.error('Login error:', response?.error);
+                console.error('Register error:', response?.error);
                 setGenericError(response?.error ?? 'An error occurred.');
                 return;
             }
@@ -90,7 +102,9 @@ const RegisterComponents: FC = () => {
 
             router.push(homeLink);
         } catch (err) {
-            console.error('Login error:', err);
+            if (err) {
+                console.error('Register error:', err);
+            }
             setGenericError('An error occurred. Please try again later.');
         } finally {
             setLoading(false);
@@ -134,6 +148,9 @@ const RegisterComponents: FC = () => {
                     htmlInput: {
                         'data-testid': 'email-input',
                     },
+                    formHelperText: {
+                        'data-testid': 'email-error',
+                    },
                 }}
             />
             <TextField
@@ -168,6 +185,9 @@ const RegisterComponents: FC = () => {
                     htmlInput: {
                         'data-testid': 'password-input',
                     },
+                    formHelperText: {
+                        'data-testid': 'password-error',
+                    },
                 }}
             />
             <TextField
@@ -182,8 +202,6 @@ const RegisterComponents: FC = () => {
                 }}
                 onPaste={e => e.preventDefault()}
                 required
-                error={!!passwordError}
-                helperText={passwordError}
                 slotProps={{
                     input: {
                         endAdornment: (
