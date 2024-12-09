@@ -27,6 +27,7 @@
     "jest/globals": true
   },
   "rules": {
+    "linebreak-style": ["error", "unix"],
     "no-nested-ternary": "off",
     "no-confusing-arrow": "off",
     "mui-path-imports/mui-path-imports": "error",
