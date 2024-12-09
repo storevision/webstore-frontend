@@ -94,7 +94,9 @@ test('should navigate to the login page', async ({ page, context }) => {
     // assert that the username is visible
     await expect(page.getByTestId('nav-username')).toBeVisible();
 
-    await expect(page.getByTestId('nav-username')).toHaveText(user.displayName);
+    await expect(page.getByTestId('nav-username')).toHaveText(
+        `Hello, ${user.displayName}`,
+    );
 
     // find element with the test-id "nav-user"
     const userButton = page.getByTestId('nav-user');
@@ -118,8 +120,8 @@ test('should navigate to the login page', async ({ page, context }) => {
     // assert the page title is correct
     await expect(page.title()).resolves.toContain('Home');
 
-    // username should not be visible
-    await expect(page.getByTestId('nav-username')).not.toBeVisible();
+    await expect(page.getByTestId('nav-username')).toBeVisible();
+    await expect(page.getByTestId('nav-username')).toHaveText('Hello, user');
 
     // find element with the test-id "nav-user"
     const accountsButton2 = page.getByTestId('nav-user');
@@ -175,5 +177,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     // username should be visible
     await expect(page.getByTestId('nav-username')).toBeVisible();
 
-    await expect(page.getByTestId('nav-username')).toHaveText(user.displayName);
+    await expect(page.getByTestId('nav-username')).toHaveText(
+        `Hello, ${user.displayName}`,
+    );
 });
