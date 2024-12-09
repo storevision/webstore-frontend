@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 test('should navigate to the login page', async ({ page, context }) => {
+    expect(false).toBe(true);
+
     const user = {
         email: `test+${Date.now()}+${context.browser()?.browserType().name()}@example.com`,
         displayName: `Test User${Date.now()}`,
