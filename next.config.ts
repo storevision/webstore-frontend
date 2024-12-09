@@ -10,6 +10,11 @@ if (!apiBaseUrl) {
 const nextConfig: NextConfig = {
     /* config options here */
     reactStrictMode: true,
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
     env: {
         API_BASE_URL: apiBaseUrl,
     },

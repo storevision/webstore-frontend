@@ -1,8 +1,33 @@
+import type { Middleware } from 'openapi-fetch';
 import createClient from 'openapi-fetch';
 import type { Method } from 'openapi-typescript';
 import type { PathsWithMethod } from 'openapi-typescript-helpers';
 
 import type { paths } from '@/generated/schema';
+
+const apiMiddleware: Middleware = {
+    onRequest: async ({ request }) => {
+        // console.log('[API]', 'Fetching', request.url);
+        // @ts-expect-error: requestTime is not part of the Node.js Request type
+        request.requestTime = Date.now();
+    },
+    onResponse: async ({ request, response }) => {
+        // @ts-expect-error: requestTime is not part of the Node.js Request type
+        const time = Date.now() - request.requestTime;
+
+        console.log(
+            `[API] [${request.method}] ${request.url} => ${response.status} ${response.statusText} (${time}ms)`,
+        );
+    },
+    onError: async ({ error, request }) => {
+        // @ts-expect-error: requestTime is not part of the Node.js Request type
+        const time = Date.now() - request.requestTime;
+
+        console.error(
+            `[API] Error fetching ${request.url}: ${error && typeof error === 'object' && 'message' in error ? error.message : 'Unknown error'} (${time}ms)`,
+        );
+    },
+};
 
 const api =
     typeof window === 'undefined'
@@ -13,9 +38,8 @@ const api =
               baseUrl: '/api',
           });
 
-export interface ErrorResponse {
-    success: false;
-    error: string;
+if (process.env.NODE_ENV === 'development') {
+    api.use(apiMiddleware);
 }
 
 export type RequestBody<
