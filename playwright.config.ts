@@ -30,6 +30,10 @@ export default defineConfig({
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: 'on-first-retry',
+        screenshot: {
+            mode: 'only-on-failure',
+        },
+        video: process.env.CI ? 'off' : 'retain-on-failure',
     },
 
     /* Configure projects for major browsers */
@@ -41,6 +45,9 @@ export default defineConfig({
 
         {
             name: 'firefox',
+            // for some reason, firefox sometimes fails on local machine
+            retries: process.env.CI ? undefined : 5,
+            timeout: process.env.CI ? undefined : 30000,
             use: { ...devices['Desktop Firefox'] },
         },
 

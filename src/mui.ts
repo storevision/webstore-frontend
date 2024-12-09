@@ -22,3 +22,9 @@ declare module '@mui/material/Button' {
         light: true;
     }
 }
+
+declare module '@mui/material/FormHelperText' {
+    interface FormHelperTextOwnProps {
+        'data-testid': string;
+    }
+}

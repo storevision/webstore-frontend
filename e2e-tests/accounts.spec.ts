@@ -3,8 +3,8 @@ import { expect, test } from '@playwright/test';
 test('should navigate to the login page', async ({ page, context }) => {
     const user = {
         email: `test+${Date.now()}+${context.browser()?.browserType().name()}@example.com`,
-        displayName: 'Test User',
-        password: 'password',
+        displayName: `Test User${Date.now()}`,
+        password: `password${Date.now()}`,
     };
 
     await page.goto('http://localhost:3000');
@@ -70,8 +70,8 @@ test('should navigate to the login page', async ({ page, context }) => {
     // error message should not be visible
     await expect(page.getByTestId('generic-error-message')).not.toBeVisible();
 
-    // fill in email
-    await page.fill('[data-testid=email-input]', user.email);
+    // fill in email incorrect email
+    await page.fill('[data-testid=email-input]', 'foo');
 
     // fill in display name
     await page.fill('[data-testid=display-name-input]', user.displayName);
@@ -85,8 +85,45 @@ test('should navigate to the login page', async ({ page, context }) => {
     // submit the form
     await page.click('[data-testid=register-button]');
 
-    // assert the error message is empty
-    await expect(page.getByTestId('generic-error-message')).not.toBeVisible();
+    // assert the error message is not empty
+    /*
+    await expect(page.getByTestId('email-error')).toBeVisible();
+
+    await expect(page.getByTestId('email-error')).toHaveText(
+        'Please enter a valid email address.',
+    );
+    */
+    // above does not work because input[type=email] does not allow invalid email addresses
+    // instead, check if email field is focused
+    await expect(page.getByTestId('email-input')).toBeFocused();
+
+    // fill in correct email
+    await page.fill('[data-testid=email-input]', user.email);
+
+    // fill in password with less than 8 characters
+    await page.fill('[data-testid=password-input]', 'pass');
+
+    // fill in password confirmation
+    await page.fill('[data-testid=password-confirmation-input]', 'pass');
+
+    // submit the form
+    await page.click('[data-testid=register-button]');
+
+    // assert the error message is not empty
+    await expect(page.getByTestId('password-error')).toBeVisible();
+
+    await expect(page.getByTestId('password-error')).toHaveText(
+        'Password must be at least 8 characters long.',
+    );
+
+    // fill in correct password
+    await page.fill('[data-testid=password-input]', user.password);
+
+    // fill in password confirmation
+    await page.fill('[data-testid=password-confirmation-input]', user.password);
+
+    // submit the form
+    await page.click('[data-testid=register-button]');
 
     // assert the URL is correct
     await expect(page).toHaveURL('http://localhost:3000/');
@@ -159,11 +196,45 @@ test('should navigate to the login page', async ({ page, context }) => {
     // error message should not be visible
     await expect(page.getByTestId('error-message')).not.toBeVisible();
 
-    // fill in email
-    await page.fill('[data-testid=email-input]', user.email);
+    // fill in incorrect email
+    await page.fill('[data-testid=email-input]', 'foo');
 
     // fill in password
     await page.fill('[data-testid=password-input]', user.password);
+
+    // submit the form
+    await page.click('[data-testid=login-button]');
+
+    // assert the error message is not empty
+    /*
+    await expect(page.getByTestId('email-error')).toBeVisible();
+
+    await expect(page.getByTestId('email-message')).toHaveText(
+        'Invalid email or password.',
+    );
+    */
+    // above does not work because input[type=email] does not allow invalid email addresses
+    // instead, check if email field is focused
+    await expect(page.getByTestId('email-input')).toBeFocused();
+
+    // fill in valid but non-existing email
+    await page.fill(
+        '[data-testid=email-input]',
+        `foo+${Date.now()}@example.com`,
+    );
+
+    // submit the form
+    await page.click('[data-testid=login-button]');
+
+    // assert the error message is not empty
+    await expect(page.getByTestId('error-message')).toBeVisible();
+
+    await expect(page.getByTestId('error-message')).toHaveText(
+        'Invalid email or password.',
+    );
+
+    // fill in correct email
+    await page.fill('[data-testid=email-input]', user.email);
 
     // submit the form
     await page.click('[data-testid=login-button]');
