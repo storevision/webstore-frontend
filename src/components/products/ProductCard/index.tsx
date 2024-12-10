@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 import type { FC } from 'react';
 
 import type { Product } from '@/types';
@@ -33,11 +35,27 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                 }}
                 elevation={2}
             >
-                <CardMedia
-                    sx={{ height: 140 }}
-                    image={product.image_url}
-                    title={product.name}
-                />
+                <CardMedia sx={{ height: 140 }} title={product.name}>
+                    <div
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    >
+                        <Image
+                            src={product.image_url}
+                            alt={product.name}
+                            placeholder="blur"
+                            blurDataURL={`data:image/jpeg;base64,${product.blurred_image}`}
+                            sizes="(max-width: 600px) 100vw, 600px"
+                            fill
+                            style={{
+                                objectFit: 'cover',
+                            }}
+                        />
+                    </div>
+                </CardMedia>
                 <CardContent>
                     <Typography variant="h5" noWrap>
                         {product.name}

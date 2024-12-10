@@ -9,7 +9,7 @@ import { StyledForm } from '@/components/common/AuthPage';
 
 import { validateEmail } from '@/utils/validate';
 
-import { homeLink, userPages } from '@/constants/navigation';
+import { homeWithWelcome, userPages } from '@/constants/navigation';
 import { useUserStore } from '@/providers/userStoreProvider';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -100,7 +100,7 @@ const RegisterComponents: FC = () => {
             setError('');
             setGenericError('');
 
-            router.push(homeLink);
+            router.push(homeWithWelcome);
         } catch (err) {
             if (err) {
                 console.error('Register error:', err);
@@ -173,6 +173,7 @@ const RegisterComponents: FC = () => {
                             <IconButton
                                 onClick={() => setShowPassword(prev => !prev)}
                                 onMouseDown={e => e.preventDefault()}
+                                tabIndex={0}
                             >
                                 {showPassword ? (
                                     <VisibilityOffIcon />
@@ -210,6 +211,7 @@ const RegisterComponents: FC = () => {
                                     setShowRepeatPassword(prev => !prev)
                                 }
                                 onMouseDown={e => e.preventDefault()}
+                                tabIndex={0}
                             >
                                 {showRepeatPassword ? (
                                     <VisibilityOffIcon />

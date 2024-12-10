@@ -325,6 +325,11 @@ export interface components {
             category_id: number;
             /** Format: uri */
             image_url: string;
+            blurred_image?: string;
+            /** Format: int64 */
+            blurred_image_width?: number;
+            /** Format: int64 */
+            blurred_image_height?: number;
         };
         Category: {
             /** Format: int64 */

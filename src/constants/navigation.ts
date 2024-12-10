@@ -34,9 +34,12 @@ const navigation: Navigation = [
 
 export const homeLink = navigation[0].href as string;
 
+export const homeWithWelcome = `${homeLink}?welcome`;
+
 export const userPages = {
     login: '/login',
     register: '/register',
+    account: '/account',
 } as const;
 
 export default navigation;
