@@ -2,7 +2,7 @@ export const pageName: string = 'Amazoni';
 
 export const pagePrimaryColor: string = '#FF9900';
 
-export const pageLightColor: string = '#FFD699';
+export const pageLightColor: string = '#ffc975';
 
 export const pageSecondaryColor: string = '#2F4465';
 

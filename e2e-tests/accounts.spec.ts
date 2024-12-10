@@ -128,6 +128,17 @@ test('should navigate to the login page', async ({ page, context }) => {
     // assert the URL is correct
     await expect(page).toHaveURL('http://localhost:3000/');
 
+    // assert that the welcome modal is visible
+    await expect(page.getByTestId('welcome-modal')).toBeVisible();
+
+    // assert that the welcome modal has the correct text
+    await expect(page.getByTestId('welcome-modal')).toContainText(
+        `Welcome, ${user.displayName}!`,
+    );
+
+    // close the welcome modal
+    await page.click('[data-testid=welcome-modal-close]');
+
     // assert that the username is visible
     await expect(page.getByTestId('nav-username')).toBeVisible();
 
