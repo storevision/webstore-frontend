@@ -135,6 +135,16 @@ test('should navigate to the login page', async ({ page, context }) => {
         `Hello, ${user.displayName}`,
     );
 
+    // reload the page
+    await page.reload();
+
+    // assert that the username is still visible
+    await expect(page.getByTestId('nav-username')).toBeVisible();
+
+    await expect(page.getByTestId('nav-username')).toHaveText(
+        `Hello, ${user.displayName}`,
+    );
+
     // find element with the test-id "nav-user"
     const userButton = page.getByTestId('nav-user');
 
