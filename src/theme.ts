@@ -1,6 +1,6 @@
 'use client';
 
-import { pageLightColor, pagePrimaryColor, pageSecondaryColor } from '@/constants';
+import { pagePrimaryColor, pageSecondaryColor } from '@/constants';
 
 import { createTheme } from '@mui/material/styles';
 
