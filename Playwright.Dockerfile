@@ -28,4 +28,6 @@ RUN rm -rf .env
 
 RUN yarn playwright install --with-deps
 
+RUN touch results.json
+
 CMD ["yarn", "test:playwright:ci"]
