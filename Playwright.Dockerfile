@@ -30,4 +30,8 @@ RUN touch results.json
 
 FROM runner AS test
 
+ENV NODE_ENV=production
+
+ENV CI=true
+
 CMD ["yarn", "test:playwright:ci"]

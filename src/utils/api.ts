@@ -9,7 +9,12 @@ const tag = `API-${typeof window === 'undefined' ? 'SERVER-SIDE' : 'CLIENT-SIDE'
 
 const apiMiddleware: Middleware = {
     onRequest: async ({ request }) => {
-        // console.log('[API]', 'Fetching', request.url);
+        // get token from cookie "token"
+        if (process.env.CI || process.env.NODE_ENV !== 'production') {
+            console.log(
+                `[${tag}] Fetching ${request.method} ${request.url} with cookies "${request.headers.get('cookie')}"`,
+            );
+        }
         // @ts-expect-error: requestTime is not part of the Node.js Request type
         request.requestTime = Date.now();
     },
