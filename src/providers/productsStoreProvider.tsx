@@ -24,7 +24,7 @@ export const ProductsStoreProvider: FC<ProductsStoreProviderProps> = ({
     children,
     productsState,
 }) => {
-    const storeRef = useRef<ProductsStoreApi>();
+    const storeRef = useRef<ProductsStoreApi>(null);
 
     if (!storeRef.current) {
         storeRef.current = createProductsStore(productsState);
