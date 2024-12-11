@@ -25,12 +25,12 @@
     "@mui/material-nextjs": "^6.1.7",
     "deepmerge": "^4.3.1",
     "email-validator": "^2.0.4",
-    "next": "15.0.3",
+    "next": "15.1.0",
     "openapi-fetch": "^0.13.3",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
     "type-fest": "^4.30.0",
@@ -41,8 +41,8 @@
     "@playwright/test": "^1.49.0",
     "@types/deepmerge": "^2.2.3",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
     "@types/react-slick": "^0.23.13",
     "@types/slick-carousel": "^1.6.40",
     "@typescript-eslint/eslint-plugin": "^7.18.1-alpha.3",
@@ -50,7 +50,7 @@
     "eslint": "^8",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
-    "eslint-config-next": "15.0.3",
+    "eslint-config-next": "15.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-import": "^2.31.0",
@@ -69,5 +69,9 @@
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "engines": {
     "node": ">=22"
+  },
+  "resolutions": {
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2"
   }
 }

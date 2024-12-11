@@ -22,7 +22,7 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({
     children,
     userState,
 }) => {
-    const storeRef = useRef<UserStoreApi>();
+    const storeRef = useRef<UserStoreApi>(null);
 
     if (!storeRef.current) {
         storeRef.current = createUserStore(userState);
