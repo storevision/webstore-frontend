@@ -32,6 +32,16 @@ const baseTheme = createTheme({
             fontSize: '1rem',
             fontWeight: 700,
         },
+        subtitle1: {
+            fontSize: '1rem',
+            fontWeight: 400,
+            letterSpacing: 'normal',
+        },
+        subtitle2: {
+            fontSize: '0.875rem',
+            fontWeight: 400,
+            letterSpacing: 'normal',
+        },
     },
     palette: {
         primary: {
