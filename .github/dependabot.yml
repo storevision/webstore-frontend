@@ -9,6 +9,10 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "eslint"
+      - dependency-name: "react"
+      - dependency-name: "@typescript-eslint/*"
     groups:
       production-dependencies:
         dependency-type: "production"
