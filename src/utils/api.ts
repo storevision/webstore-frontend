@@ -5,6 +5,8 @@ import type { PathsWithMethod } from 'openapi-typescript-helpers';
 
 import type { paths } from '@/generated/schema';
 
+const tag = `API-${typeof window === 'undefined' ? 'SERVER-SIDE' : 'CLIENT-SIDE'}`;
+
 const apiMiddleware: Middleware = {
     onRequest: async ({ request }) => {
         // console.log('[API]', 'Fetching', request.url);
@@ -16,7 +18,7 @@ const apiMiddleware: Middleware = {
         const time = Date.now() - request.requestTime;
 
         console.log(
-            `[API] [${request.method}] ${request.url} => ${response.status} ${response.statusText} (${time}ms)`,
+            `[${tag}] [${request.method}] ${request.url} => ${response.status} ${response.statusText} (${time}ms)`,
         );
     },
     onError: async ({ error, request }) => {
@@ -24,7 +26,7 @@ const apiMiddleware: Middleware = {
         const time = Date.now() - request.requestTime;
 
         console.error(
-            `[API] Error fetching ${request.url}: ${error && typeof error === 'object' && 'message' in error ? error.message : 'Unknown error'} (${time}ms)`,
+            `[${tag}] Error fetching ${request.url}: ${error && typeof error === 'object' && 'message' in error ? error.message : 'Unknown error'} (${time}ms)`,
         );
     },
 };
@@ -49,6 +51,14 @@ export type RequestBody<
     requestBody: { content: { 'application/json': object } };
 }
     ? paths[T][M]['requestBody']['content']['application/json']
+    : never;
+
+export type ExtractSuccessData<T> = T extends { success: true; data: infer D }
+    ? D
+    : never;
+
+export type ExtractErrorData<T> = T extends { success: false; error: infer E }
+    ? E
     : never;
 
 export default api;

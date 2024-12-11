@@ -1,6 +1,4 @@
-import type { Metadata } from 'next';
-
-import type { FC } from 'react';
+import type { Metadata, NextPage } from 'next';
 
 import AuthPage from '@/components/common/AuthPage';
 import LoginComponents from '@/components/common/LoginComponents';
@@ -11,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Login',
 };
 
-const LoginPage: FC = () => (
+const LoginPage: NextPage = () => (
     <AuthPage title={`Login to ${pageName}`}>
         <LoginComponents />
     </AuthPage>

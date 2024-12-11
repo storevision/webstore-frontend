@@ -1,6 +1,4 @@
-import type { Metadata } from 'next';
-
-import type { FC } from 'react';
+import type { Metadata, NextPage } from 'next';
 
 import AuthPage from '@/components/common/AuthPage';
 import RegisterComponents from '@/components/common/RegisterComponents';
@@ -11,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Register',
 };
 
-const RegisterPage: FC = () => (
+const RegisterPage: NextPage = () => (
     <AuthPage title={`Register for ${pageName}`}>
         <RegisterComponents />
     </AuthPage>

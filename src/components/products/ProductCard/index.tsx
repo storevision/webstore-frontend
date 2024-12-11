@@ -1,14 +1,17 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import type { FC } from 'react';
 
 import type { Product } from '@/types';
 
-import { currency } from '@/constants';
+import AddToCartButton from '@/components/products/AddToCartButton';
 
-import AddIcon from '@mui/icons-material/Add';
+import { currency } from '@/constants';
+import { productPage } from '@/constants/navigation';
+
 import InfoIcon from '@mui/icons-material/Info';
 import { lighten, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -25,6 +28,7 @@ export interface ProductCardProps {
 
 const ProductCard: FC<ProductCardProps> = ({ product }) => {
     const theme = useTheme();
+    const router = useRouter();
 
     return (
         <Box height="100%" padding={0.5}>
@@ -69,12 +73,16 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" startIcon={<InfoIcon />}>
+                    <Button
+                        size="small"
+                        startIcon={<InfoIcon />}
+                        onClick={() =>
+                            router.push(productPage(product.id, product.name))
+                        }
+                    >
                         Learn More
                     </Button>
-                    <Button size="small" startIcon={<AddIcon />}>
-                        Add to cart
-                    </Button>
+                    <AddToCartButton productId={product.id} />
                 </CardActions>
             </Card>
         </Box>
