@@ -28,8 +28,6 @@ test('home page should have products', async ({ page }) => {
             .locator('[data-testid="category-name"]')
             .textContent({ timeout: 3000 });
 
-        console.log({ categoryName });
-
         expect(categoryName).toContain('Products in:');
 
         const desktopRow = category.locator(
@@ -53,7 +51,6 @@ test('home page should have products', async ({ page }) => {
             '[data-testid^="product-card-"]',
         );
 
-        // console.log all the data-testids from desktop rows
         const desktopProductsList = await desktopProducts.all();
 
         const mobileProductsList = await mobileProducts.all();
