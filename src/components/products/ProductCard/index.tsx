@@ -34,6 +34,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                     backgroundColor: lighten(theme.palette.primary.light, 0.9),
                 }}
                 elevation={2}
+                data-testid={`product-card-${product.id}`}
             >
                 <CardMedia sx={{ height: 140 }} title={product.name}>
                     <div

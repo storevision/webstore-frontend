@@ -38,6 +38,7 @@ const HomePage: FC = async () => {
                     borderRadius={4}
                     color="primary.contrastText"
                     bgcolor="white.main"
+                    data-testid="product-category"
                 >
                     <Box
                         display="flex"
@@ -45,7 +46,12 @@ const HomePage: FC = async () => {
                         alignItems="center"
                         mb={1}
                     >
-                        <Typography variant="h5" fontWeight="bold" marginX={1}>
+                        <Typography
+                            variant="h5"
+                            fontWeight="bold"
+                            marginX={1}
+                            data-testid="category-name"
+                        >
                             Products in: {category}
                         </Typography>
                         <Button
