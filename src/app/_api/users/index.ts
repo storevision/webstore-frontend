@@ -7,14 +7,14 @@ import api from '@/utils/api';
 const pGetUser = async () => {
     const cookie = await getCookies();
 
-    const { data, error } = await api.GET('/users/info', {
+    const { data, error, response } = await api.GET('/users/info', {
         headers: {
             cookie,
         },
     });
 
     if (error) {
-        return error;
+        return { ...error, response };
     }
 
     return data;
@@ -28,12 +28,12 @@ export type LoginArgs = RequestBody<'/users/login'>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const pLogin = async (body: LoginArgs) => {
-    const { data, error } = await api.POST('/users/login', {
+    const { data, error, response } = await api.POST('/users/login', {
         body,
     });
 
     if (error) {
-        return error;
+        return { ...error, response };
     }
 
     return data;
@@ -47,12 +47,12 @@ export type RegisterArgs = RequestBody<'/users/register'>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const pRegister = async (body: RegisterArgs) => {
-    const { data, error } = await api.POST('/users/register', {
+    const { data, error, response } = await api.POST('/users/register', {
         body,
     });
 
     if (error) {
-        return error;
+        return { ...error, response };
     }
 
     return data;
@@ -67,10 +67,15 @@ export const register: (body: RegisterArgs) => Promise<RegisterResponse> =
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const pLogout = async () => {
-    const { data, error } = await api.POST('/users/logout');
+    const { data, error, response } = await api.POST('/users/logout');
 
     if (error) {
-        return error;
+        return {
+            ...(typeof error === 'object'
+                ? error
+                : ({ success: false } as const)),
+            response,
+        };
     }
 
     return data;

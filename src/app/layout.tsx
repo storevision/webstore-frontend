@@ -4,9 +4,12 @@ import { Inter } from 'next/font/google';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 
+import { getCategories } from '@/app/_api/categories';
+import { getProducts } from '@/app/_api/products';
 import { getUser } from '@/app/_api/users';
 
 import { pageDescription, pageName } from '@/constants';
+import { ProductsStoreProvider } from '@/providers/productsStoreProvider';
 import { UserStoreProvider } from '@/providers/userStoreProvider';
 import theme from '@/theme';
 
@@ -34,6 +37,16 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
     const userResponse = await getUser();
     const user = userResponse?.success ? userResponse.data : undefined;
 
+    const productsResponse = await getProducts();
+    const products = productsResponse?.success
+        ? productsResponse.data
+        : undefined;
+
+    const categoriesResponse = await getCategories();
+    const categories = categoriesResponse?.success
+        ? categoriesResponse.data
+        : undefined;
+
     return (
         <html lang="en">
             <body className={`${interFont.variable}`}>
@@ -41,7 +54,11 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
                     <ThemeProvider theme={theme}>
                         <CssBaseline enableColorScheme />
                         <UserStoreProvider userState={{ user }}>
-                            {children}
+                            <ProductsStoreProvider
+                                productsState={{ products, categories }}
+                            >
+                                {children}
+                            </ProductsStoreProvider>
                         </UserStoreProvider>
                     </ThemeProvider>
                 </AppRouterCacheProvider>

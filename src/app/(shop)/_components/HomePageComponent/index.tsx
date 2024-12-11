@@ -1,36 +1,32 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { useRouter } from 'next/navigation';
 
 import type { FC } from 'react';
-
-import { getCategories } from '@/app/_api/categories';
-import { getProducts } from '@/app/_api/products';
 
 import ProductSlider from '@/components/products/ProductSlider';
 
 import { splitProductsByCategory } from '@/utils/helpers';
 
+import { categoryPage } from '@/constants/navigation';
+import { useProductsStore } from '@/providers/productsStoreProvider';
+
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-export const metadata: Metadata = {
-    title: 'Home',
-};
+const HomePageComponent: FC = () => {
+    const products = useProductsStore(store => store.products);
+    const categories = useProductsStore(store => store.categories);
 
-const HomePage: FC = async () => {
-    const productsResponse = await getProducts();
-    const categoriesResponse = await getCategories();
+    const categorized = splitProductsByCategory(products, categories);
 
-    const categorized = splitProductsByCategory(
-        productsResponse,
-        categoriesResponse,
-    );
+    const router = useRouter();
 
     return (
-        <Container>
-            {Object.entries(categorized).map(([category, products]) => (
+        <>
+            {Object.entries(categorized).map(([category, productList]) => (
                 <Box
                     key={category}
                     marginBottom={1}
@@ -59,15 +55,23 @@ const HomePage: FC = async () => {
                             variant="text"
                             color="primary"
                             size="small"
+                            onClick={() =>
+                                router.push(
+                                    categoryPage(
+                                        productList[0].category_id,
+                                        category,
+                                    ),
+                                )
+                            }
                         >
                             View all
                         </Button>
                     </Box>
-                    <ProductSlider products={products} />
+                    <ProductSlider products={productList} />
                 </Box>
             ))}
-        </Container>
+        </>
     );
 };
 
-export default HomePage;
+export default HomePageComponent;

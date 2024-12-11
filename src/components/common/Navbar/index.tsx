@@ -11,6 +11,7 @@ import Logo from '@public/logo.png';
 import MobileNavbar from '@/components/common/MobileNavbar';
 import NavbarAvatar from '@/components/common/NavbarAvatar';
 import NavButton from '@/components/common/NavButton';
+import ProductSearchbar from '@/components/common/ProductSearchbar';
 
 import useIsMobile from '@/hooks/useIsMobile';
 
@@ -37,17 +38,26 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-const HideOnScroll: FC<Pick<SlideProps, 'children'>> = ({ children }) => {
+const HideOnScroll: FC<
+    Pick<SlideProps, 'children'> & { disabled?: boolean }
+> = ({ children, disabled = false }) => {
     const trigger = useScrollTrigger();
 
     return (
-        <Slide appear={false} direction="down" in={!trigger}>
+        <Slide appear={false} direction="down" in={disabled || !trigger}>
             {children}
         </Slide>
     );
 };
 
-const Navbar: FC = () => {
+export interface NavbarProps {
+    withSearch?: boolean;
+}
+
+const leftNavigation = navigation.filter(({ align }) => align !== 'right');
+const rightNavigation = navigation.filter(({ align }) => align === 'right');
+
+const Navbar: FC<NavbarProps> = ({ withSearch }) => {
     const theme = useTheme();
     const isMobile = useIsMobile();
     const user = useUserStore(store => store.user);
@@ -72,8 +82,8 @@ const Navbar: FC = () => {
     }, [isMobile]);
 
     return (
-        <HideOnScroll>
-            <AppBar position="static">
+        <HideOnScroll disabled>
+            <AppBar position="sticky">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {isMobile ? (
@@ -133,29 +143,66 @@ const Navbar: FC = () => {
                                     </Box>
                                 </Link>
                                 <Divider orientation="vertical" flexItem />
-                                <Stack direction="row" spacing={1} flex={1}>
-                                    {navigation.map(
-                                        ({ href, title, Icon, align }) => (
-                                            <Link
-                                                href={href}
-                                                key={title}
-                                                data-testid={`nav-${title.toLowerCase()}`}
-                                                style={{
-                                                    marginLeft:
-                                                        align === 'right'
-                                                            ? 'auto'
-                                                            : undefined,
-                                                }}
-                                            >
-                                                <NavButton
-                                                    Icon={Icon}
-                                                    title={title}
+                                <Box
+                                    display="flex"
+                                    flex={1}
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    gap={3}
+                                >
+                                    <Stack direction="row" spacing={1} flex={1}>
+                                        {leftNavigation.map(
+                                            ({ href, title, Icon }) => (
+                                                <Link
                                                     href={href}
-                                                />
-                                            </Link>
-                                        ),
-                                    )}
-                                </Stack>
+                                                    key={title}
+                                                    data-testid={`nav-${title.toLowerCase()}`}
+                                                >
+                                                    <NavButton
+                                                        Icon={Icon}
+                                                        title={title}
+                                                        href={href}
+                                                    />
+                                                </Link>
+                                            ),
+                                        )}
+                                    </Stack>
+                                    {withSearch ? (
+                                        <Box
+                                            flex={1}
+                                            marginY={1}
+                                            maxWidth={400}
+                                        >
+                                            <ProductSearchbar
+                                                fullWidth
+                                                disableSpacing
+                                                zIndex={theme.zIndex.appBar + 1}
+                                            />
+                                        </Box>
+                                    ) : null}
+                                    <Stack
+                                        direction="row"
+                                        spacing={1}
+                                        justifyContent="flex-end"
+                                        flex={1}
+                                    >
+                                        {rightNavigation.map(
+                                            ({ href, title, Icon }) => (
+                                                <Link
+                                                    href={href}
+                                                    key={title}
+                                                    data-testid={`nav-${title.toLowerCase()}`}
+                                                >
+                                                    <NavButton
+                                                        Icon={Icon}
+                                                        title={title}
+                                                        href={href}
+                                                    />
+                                                </Link>
+                                            ),
+                                        )}
+                                    </Stack>
+                                </Box>
                                 <Divider orientation="vertical" flexItem />
                                 <Box
                                     display="flex"
@@ -221,6 +268,16 @@ const Navbar: FC = () => {
                     }}
                     style={{ marginTop: 4 }}
                     data-testid="nav-user-menu"
+                    slotProps={{
+                        paper: {
+                            sx: {
+                                minWidth: {
+                                    xs: 120,
+                                    sm: 200,
+                                },
+                            },
+                        },
+                    }}
                 >
                     <MenuItem
                         style={{ display: !user ? 'none' : undefined }}
