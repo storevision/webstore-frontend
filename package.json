@@ -40,7 +40,7 @@
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@playwright/test": "^1.49.0",
     "@types/deepmerge": "^2.2.3",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-slick": "^0.23.13",
