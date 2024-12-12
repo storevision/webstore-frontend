@@ -97,7 +97,6 @@ jobs:
 #        run: yarn typecheck
 
   push_to_registry:
-    name: Build and push
     needs:
       - lint
       - test
@@ -107,6 +106,7 @@ jobs:
         dockerfile: [Frontend.Dockerfile, Playwright.Dockerfile]
         build_arch: [amd64, arm64]
       fail-fast: false
+    name: Build ${{ matrix.dockerfile }} (${{ matrix.build_arch }})
     runs-on: ubuntu-latest
     permissions:
       packages: write
