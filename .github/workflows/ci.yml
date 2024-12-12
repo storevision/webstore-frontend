@@ -97,6 +97,9 @@ jobs:
 #        run: yarn typecheck
 
   push_to_registry:
+    needs:
+      - lint
+      - test
     strategy:
       matrix:
         dockerfile: [Frontend.Dockerfile, Playwright.Dockerfile]
