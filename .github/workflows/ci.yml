@@ -121,18 +121,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Setup Node.js (mainly for yarn cache)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
-
-      - name: Get cache path
-        id: cache-path
-        run: |
-          echo "YARN_CACHE_PATH=$(yarn cache dir)" >> $GITHUB_ENV
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -175,8 +163,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: ${{ matrix.architecture }}
-          build-args: |
-            YARN_CACHE_PATH=${{ env.YARN_CACHE_PATH }}
           outputs: type=image,name=${{ env.image_name }},push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
