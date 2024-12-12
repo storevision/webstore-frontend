@@ -22,11 +22,13 @@ WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 
+COPY package.json yarn.lock ./
+
+RUN yarn playwright install --with-deps
+
 COPY . .
 
 RUN rm -rf .env
-
-RUN yarn playwright install --with-deps
 
 RUN touch results.json
 

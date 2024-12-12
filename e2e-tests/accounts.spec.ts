@@ -67,6 +67,12 @@ test('should navigate to the login page', async ({ page, context }) => {
     // submit button should be visible
     await expect(page.getByTestId('register-button')).toBeVisible();
 
+    /* console.warn(
+        'Cookies2',
+        await context.cookies(),
+        context.browser()?.browserType().name(),
+    ); */
+
     // error message should not be visible
     await expect(page.getByTestId('generic-error-message')).not.toBeVisible();
 
@@ -128,6 +134,12 @@ test('should navigate to the login page', async ({ page, context }) => {
     // assert the URL is correct
     await expect(page).toHaveURL('http://localhost:3000/');
 
+    /* console.warn(
+        'Cookies1',
+        await context.cookies(),
+        context.browser()?.browserType().name(),
+    ); */
+
     // assert that the welcome modal is visible
     await expect(page.getByTestId('welcome-modal')).toBeVisible();
 
@@ -148,6 +160,12 @@ test('should navigate to the login page', async ({ page, context }) => {
 
     // reload the page
     await page.reload();
+
+    /* console.warn(
+        'Cookies3',
+        await context.cookies(),
+        context.browser()?.browserType().name(),
+    ); */
 
     // assert that the username is still visible
     await expect(page.getByTestId('nav-username')).toBeVisible();
