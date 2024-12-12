@@ -72,6 +72,7 @@ const ProductSearchbar: FC<ProductSearchbarProps> = ({
         <Autocomplete
             inputValue={inputValue}
             fullWidth={fullWidth}
+            size="small"
             slotProps={{
                 popper: {
                     sx: {
