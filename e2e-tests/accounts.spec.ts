@@ -197,7 +197,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     await expect(page.title()).resolves.toContain('Home');
 
     await expect(page.getByTestId('nav-username')).toBeVisible();
-    await expect(page.getByTestId('nav-username')).toHaveText('Hello, user');
+    await expect(page.getByTestId('nav-username')).toHaveText('Hello, User');
 
     // find element with the test-id "nav-user"
     const accountsButton2 = page.getByTestId('nav-user');

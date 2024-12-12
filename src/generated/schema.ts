@@ -273,7 +273,7 @@ export interface paths {
                         };
                     };
                 };
-                /** @description Unauthorized */
+                /** @description Unauthorized (token missing, token expired,...) */
                 401: {
                     headers: {
                         [name: string]: unknown;
@@ -331,7 +331,7 @@ export interface paths {
                         };
                     };
                 };
-                /** @description Bad request */
+                /** @description Bad request (email empty, password empty,...) */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -340,7 +340,7 @@ export interface paths {
                         "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
-                /** @description Unauthorized */
+                /** @description Unauthorized (email not found, password incorrect,...) */
                 401: {
                     headers: {
                         [name: string]: unknown;
@@ -395,7 +395,7 @@ export interface paths {
                         };
                     };
                 };
-                /** @description Bad request */
+                /** @description Bad request (email empty, password empty,...) */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -404,7 +404,7 @@ export interface paths {
                         "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
-                /** @description Conflict */
+                /** @description Conflict (email already exists) */
                 409: {
                     headers: {
                         [name: string]: unknown;
@@ -413,7 +413,7 @@ export interface paths {
                         "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
-                /** @description Internal server error */
+                /** @description Internal server error (database error,...) */
                 500: {
                     headers: {
                         [name: string]: unknown;
@@ -490,11 +490,19 @@ export interface components {
             category_id: number;
             /** Format: uri */
             image_url: string;
-            blurred_image?: string;
             /** Format: int64 */
-            blurred_image_width?: number;
+            image_width: number;
             /** Format: int64 */
-            blurred_image_height?: number;
+            image_height: number;
+            blurred_image: string | null;
+            /** Format: int64 */
+            blurred_image_width: number | null;
+            /** Format: int64 */
+            blurred_image_height: number | null;
+            /** Format: int64 */
+            stock: number;
+            /** Format: double */
+            avg_rating: number;
         };
         SearchedProduct: {
             product: components["schemas"]["Product"];

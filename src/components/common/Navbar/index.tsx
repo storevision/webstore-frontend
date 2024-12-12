@@ -27,7 +27,6 @@ import { useScrollTrigger, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -142,7 +141,6 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         </Typography>
                                     </Box>
                                 </Link>
-                                <Divider orientation="vertical" flexItem />
                                 <Box
                                     display="flex"
                                     flex={1}
@@ -150,7 +148,11 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                     alignItems="center"
                                     gap={3}
                                 >
-                                    <Stack direction="row" spacing={1} flex={1}>
+                                    <Stack
+                                        direction="row"
+                                        spacing={1}
+                                        flex="0 1 auto"
+                                    >
                                         {leftNavigation.map(
                                             ({ href, title, Icon }) => (
                                                 <Link
@@ -168,11 +170,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         )}
                                     </Stack>
                                     {withSearch ? (
-                                        <Box
-                                            flex={1}
-                                            marginY={1}
-                                            maxWidth={400}
-                                        >
+                                        <Box flex="1 1 auto" marginY={1}>
                                             <ProductSearchbar
                                                 fullWidth
                                                 disableSpacing
@@ -184,7 +182,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         direction="row"
                                         spacing={1}
                                         justifyContent="flex-end"
-                                        flex={1}
+                                        flex="0 1 auto"
                                     >
                                         {rightNavigation.map(
                                             ({ href, title, Icon }) => (
@@ -203,7 +201,6 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         )}
                                     </Stack>
                                 </Box>
-                                <Divider orientation="vertical" flexItem />
                                 <Box
                                     display="flex"
                                     alignItems="center"
@@ -230,7 +227,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                             data-testid="nav-username"
                                         >
                                             Hello,{' '}
-                                            {user?.display_name || 'user'}
+                                            {user?.display_name || 'User'}
                                         </Typography>
                                         {user ? (
                                             <Typography

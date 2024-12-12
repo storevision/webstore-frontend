@@ -9,9 +9,9 @@ import Container from '@mui/material/Container';
 const Layout: FC<PropsWithChildren> = ({ children }) => (
     <>
         <Navbar withSearch />
-        <Box mt={2} marginX={1}>
+        <Box mt={3} marginX={1}>
             <main>
-                <Container>{children}</Container>
+                <Container maxWidth="lg">{children}</Container>
             </main>
         </Box>
         <WelcomeModal />
