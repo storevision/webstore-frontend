@@ -113,11 +113,16 @@ jobs:
       attestations: write
       id-token: write
     steps:
+      - name: Prepare
+        run: |
+          platform=${{ matrix.architecture }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
       - name: Check out the repo
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -149,7 +154,7 @@ jobs:
           images: ${{ env.image_name }}
 
       - name: Build and push Docker image
-        id: push
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -160,3 +165,64 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: ${{ matrix.architecture }}
+          outputs: type=image,name=${{ env.image_name }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    runs-on: ubuntu-latest
+    needs:
+      - push_to_registry
+    strategy:
+      matrix:
+          dockerfile: [Frontend.Dockerfile, Playwright.Dockerfile]
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-*
+          merge-multiple: true
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Get Dockerfile Name
+        id: dockerfile
+        run: |
+          name=$(echo ${{ matrix.dockerfile }} | cut -d'.' -f1)
+          name=$(echo $name | tr '[:upper:]' '[:lower:]')
+          echo "Name: $name"
+          image_name="commanderred42/webstore-$name"
+          echo "Image Name: $image_name"
+          echo "image_name=$image_name" >> $GITHUB_ENV
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.image_name }}
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.image_name }}@sha256:%s ' *)
