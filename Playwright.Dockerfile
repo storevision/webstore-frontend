@@ -9,12 +9,12 @@ WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+ARG YARN_CACHE_PATH
+ENV YARN_CACHE_PATH=${YARN_CACHE_PATH}
+
+# RUN yarn --frozen-lockfile
+# the cache on the host is located at YARN_CACHE_PATH
+RUN --mount=type=cache,target=${YARN_CACHE_PATH} YARN_CACHE_FOLDER=${YARN_CACHE_PATH} yarn --frozen-lockfile --prefer-offline
 
 FROM base AS runner
 

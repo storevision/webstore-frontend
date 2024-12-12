@@ -15,7 +15,13 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* .npmrc* ./
-RUN yarn --frozen-lockfile
+
+ARG YARN_CACHE_PATH
+ENV YARN_CACHE_PATH=${YARN_CACHE_PATH}
+
+# RUN yarn --frozen-lockfile
+# the cache on the host is located at YARN_CACHE_PATH
+RUN --mount=type=cache,target=${YARN_CACHE_PATH} YARN_CACHE_FOLDER=${YARN_CACHE_PATH} yarn --frozen-lockfile --prefer-offline
 
 # Rebuild the source code only when needed
 FROM base AS builder
