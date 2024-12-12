@@ -105,9 +105,9 @@ jobs:
     strategy:
       matrix:
         dockerfile: [Frontend.Dockerfile, Playwright.Dockerfile]
-        os: [ubuntu-latest, macos-latest]
+        build_arch: [amd64, arm64]
       fail-fast: false
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
@@ -116,6 +116,12 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+        if: ${{ matrix.build_arch != 'amd64' }}
+        with:
+          platforms: ${{ matrix.build_arch }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -155,3 +161,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          platforms: linux/${{ matrix.build_arch }}
