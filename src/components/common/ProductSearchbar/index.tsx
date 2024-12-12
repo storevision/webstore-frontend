@@ -125,7 +125,7 @@ const ProductSearchbar: FC<ProductSearchbarProps> = ({
                                     0.05,
                                 ),
                             },
-                            '& .Mui-focused': {
+                            '&.Mui-focused': {
                                 backgroundColor: darken(
                                     theme.palette.background.paper,
                                     0.1,
