@@ -97,9 +97,9 @@ jobs:
 #        run: yarn typecheck
 
   push_to_registry:
-    needs:
-      - lint
-      - test
+    # needs:
+    #   - lint
+    #   - test
     strategy:
       matrix:
         dockerfile: [Frontend.Dockerfile, Playwright.Dockerfile]
@@ -159,8 +159,6 @@ jobs:
         with:
           context: .
           file: ./${{ matrix.dockerfile }}
-          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -219,6 +217,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
+          flavor: |
+            latest=true
           images: ${{ env.image_name }}
 
       - name: Create manifest list and push
