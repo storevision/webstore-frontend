@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -23,6 +23,7 @@ import TextField from '@mui/material/TextField';
 
 const RegisterComponents: FC = () => {
     const router = useRouter();
+    const params = useSearchParams();
 
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -100,6 +101,11 @@ const RegisterComponents: FC = () => {
             setError('');
             setGenericError('');
 
+            if (params.has('redirect')) {
+                router.push(params.get('redirect') ?? homeWithWelcome);
+                return;
+            }
+
             router.push(homeWithWelcome);
         } catch (err) {
             if (err) {
@@ -110,6 +116,8 @@ const RegisterComponents: FC = () => {
             setLoading(false);
         }
     };
+
+    const query = params.size ? `?${params.toString()}` : '';
 
     return (
         <StyledForm onSubmit={handleSubmit} data-testid="register-form">
@@ -249,7 +257,7 @@ const RegisterComponents: FC = () => {
                 variant="contained"
                 color="secondary"
                 fullWidth
-                onClick={() => router.push(userPages.login)}
+                onClick={() => router.push(`${userPages.login}${query}`)}
                 disabled={loading}
             >
                 Login here

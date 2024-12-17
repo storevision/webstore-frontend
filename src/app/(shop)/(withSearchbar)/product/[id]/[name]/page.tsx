@@ -4,13 +4,15 @@ import { redirect } from 'next/navigation';
 import { getProductById } from '@/app/_api/products';
 import ProductControls from '@/app/(shop)/(withSearchbar)/product/[id]/[name]/_components/ProductControls';
 import ProductImage from '@/app/(shop)/(withSearchbar)/product/[id]/[name]/_components/ProductImage';
+import UserReview from '@/app/(shop)/(withSearchbar)/product/[id]/[name]/_components/UserReview';
 
 import { homeLink } from '@/constants/navigation';
 
 import { Grid2 } from '@mui/material';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Skeleton from '@mui/material/Skeleton';
+import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 
 export interface ProductPageProps {
@@ -32,47 +34,52 @@ const ProductPage: NextPage<ProductPageProps> = async ({ params }) => {
         redirect(homeLink);
     }
 
-    const product = productResponse.data;
+    const { product, reviews } = productResponse.data;
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid2 container spacing={2}>
-                <Grid2 size={4} display="flex">
+                <Grid2
+                    size={{ xs: 12, sm: 12, md: 4 }}
+                    display="flex"
+                    justifyContent="center"
+                >
                     <ProductImage product={product} />
                 </Grid2>
-                <Grid2 size={5}>
+                <Grid2 size={{ xs: 12, sm: 12, md: 5 }}>
                     <Box>
                         <Typography variant="h2">{product.name}</Typography>
+                        <Box display="flex" flexDirection="row" gap={1}>
+                            <Rating
+                                value={product.average_rating}
+                                readOnly
+                                precision={0.5}
+                            />
+                            <Typography variant="h6">
+                                {reviews.length} reviews
+                            </Typography>
+                        </Box>
                         <Typography variant="subtitle1">
                             {product.description}
                         </Typography>
                     </Box>
                 </Grid2>
-                <Grid2 size={3}>
-                    <ProductControls product={product} />
+                <Grid2 size={{ xs: 12, sm: 12, md: 3 }}>
+                    <ProductControls product={product} reviews={reviews} />
                 </Grid2>
             </Grid2>
             <Divider sx={{ marginY: 2 }} />
-            <Typography variant="h5">Reviews</Typography>
-            <Box marginY={1}>
-                {Array.from({ length: 3 }).map((_, index) => (
-                    <Box key={index} display="flex" gap={2} mb={2}>
-                        <Skeleton
-                            variant="circular"
-                            width={40}
-                            height={40}
-                            sx={{ borderRadius: '50%' }}
-                        />
-                        <Box>
-                            <Typography variant="h6">John Doe</Typography>
-                            <Typography variant="body2">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Donec nec odio
-                            </Typography>
-                        </Box>
-                    </Box>
-                ))}
-            </Box>
+            <Container>
+                <Typography variant="h5">Reviews</Typography>
+                <Box marginY={1}>
+                    {reviews.map((review, index) => (
+                        <UserReview key={index} review={review} />
+                    ))}
+                    {reviews.length === 0 ? (
+                        <Typography variant="body1">No reviews yet</Typography>
+                    ) : null}
+                </Box>
+            </Container>
         </Box>
     );
 };

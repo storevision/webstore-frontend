@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -22,6 +22,7 @@ import TextField from '@mui/material/TextField';
 
 const LoginComponents: FC = () => {
     const router = useRouter();
+    const params = useSearchParams();
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -31,6 +32,8 @@ const LoginComponents: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const doLogin = useUserStore(store => store.doLogin);
+
+    const query = params.size ? `?${params.toString()}` : '';
 
     const handleSubmit = async (
         event: React.FormEvent<HTMLFormElement>,
@@ -59,6 +62,11 @@ const LoginComponents: FC = () => {
             }
 
             setError('');
+
+            if (params.has('redirect')) {
+                router.push(params.get('redirect') ?? homeLink);
+                return;
+            }
 
             router.push(homeLink);
         } catch (err) {
@@ -141,7 +149,7 @@ const LoginComponents: FC = () => {
                 color="secondary"
                 fullWidth
                 disabled={loading}
-                onClick={() => router.push(userPages.register)}
+                onClick={() => router.push(`${userPages.register}${query}`)}
                 data-testid="register-button"
             >
                 Register Now
