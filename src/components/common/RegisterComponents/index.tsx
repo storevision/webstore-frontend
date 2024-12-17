@@ -102,8 +102,17 @@ const RegisterComponents: FC = () => {
             setGenericError('');
 
             if (params.has('redirect')) {
-                router.push(params.get('redirect') ?? homeWithWelcome);
-                return;
+                const newUrl = params.get('redirect');
+
+                if (newUrl) {
+                    const newParams = new URLSearchParams();
+                    newParams.append('welcome', '');
+
+                    const paramsString = `?${newParams.toString()}`;
+                    router.push(`${newUrl}${paramsString}`);
+
+                    return;
+                }
             }
 
             router.push(homeWithWelcome);
