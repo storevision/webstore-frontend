@@ -1,4 +1,4 @@
-# webstore-frontend-js
+# webstore-frontend
 
 ## Docs
 
