@@ -12,7 +12,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     await expect(page.getByTestId('nav-user-menu')).not.toBeVisible();
 
     // find element with the test-id "nav-user"
-    const accountsButton = page.getByTestId('nav-user');
+    const accountsButton = page.getByTestId('nav-user-desktop');
 
     await expect(accountsButton).toBeVisible();
 
@@ -27,7 +27,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     await loginButton.click();
 
     // assert the URL is correct
-    await expect(page).toHaveURL('http://localhost:3000/login');
+    await expect(page).toHaveURL('http://localhost:3000/login?redirect=%2F');
 
     // assert the 404 page is not visible
     await expect(page.getByText('404')).not.toBeVisible();
@@ -41,7 +41,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     await registerButton.click();
 
     // assert the URL is correct
-    await expect(page).toHaveURL('http://localhost:3000/register');
+    await expect(page).toHaveURL('http://localhost:3000/register?redirect=%2F');
 
     // assert the 404 page is not visible
     await expect(page.getByText('404')).not.toBeVisible();
@@ -175,7 +175,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     );
 
     // find element with the test-id "nav-user"
-    const userButton = page.getByTestId('nav-user');
+    const userButton = page.getByTestId('nav-user-desktop');
 
     await userButton.click();
 
@@ -200,7 +200,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     await expect(page.getByTestId('nav-username')).toHaveText('Hello, User');
 
     // find element with the test-id "nav-user"
-    const accountsButton2 = page.getByTestId('nav-user');
+    const accountsButton2 = page.getByTestId('nav-user-desktop');
 
     await expect(accountsButton2).toBeVisible();
 
@@ -215,7 +215,7 @@ test('should navigate to the login page', async ({ page, context }) => {
     await loginButton2.click();
 
     // assert the URL is correct
-    await expect(page).toHaveURL('http://localhost:3000/login');
+    await expect(page).toHaveURL('http://localhost:3000/login?redirect=%2F');
 
     // login form should be visible
     await expect(page.getByTestId('login-form')).toBeVisible();

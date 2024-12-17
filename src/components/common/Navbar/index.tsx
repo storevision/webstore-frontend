@@ -129,7 +129,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         radius={false}
                                         onClick={handleClickUser}
                                         style={{ cursor: 'pointer' }}
-                                        data-testid="nav-user"
+                                        data-testid="nav-user-mobile"
                                     />
                                 ) : (
                                     <NavbarAvatar
@@ -138,7 +138,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         padding={0}
                                         onClick={handleClickUser}
                                         style={{ cursor: 'pointer' }}
-                                        data-testid="nav-user"
+                                        data-testid="nav-user-mobile"
                                     />
                                 )}
                             </Box>
@@ -252,7 +252,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         radius={false}
                                         onClick={handleClickUser}
                                         style={{ cursor: 'pointer' }}
-                                        data-testid="nav-user"
+                                        data-testid="nav-user-desktop"
                                     />
                                 ) : (
                                     <NavbarAvatar
@@ -261,7 +261,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                         padding={0}
                                         onClick={handleClickUser}
                                         style={{ cursor: 'pointer' }}
-                                        data-testid="nav-user"
+                                        data-testid="nav-user-desktop"
                                     />
                                 )}
                                 {/* Doing padding like this for alignment is bad but i am lazy */}
