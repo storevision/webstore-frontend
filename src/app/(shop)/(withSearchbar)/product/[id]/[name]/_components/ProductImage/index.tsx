@@ -12,14 +12,25 @@ import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 
 export interface ProductImageProps {
-    product: ExtractSuccessData<GetProductByIdResponse>;
+    product: ExtractSuccessData<GetProductByIdResponse>['product'];
 }
 
 const ProductImage: FC<ProductImageProps> = ({ product }) => {
     const theme = useTheme();
 
     return (
-        <Box flex={1} position="relative" width="100%">
+        <Box
+            flex={1}
+            position="relative"
+            width="100%"
+            sx={{
+                maxWidth: {
+                    xs: '40%',
+                    sm: '40%',
+                    md: '100%',
+                },
+            }}
+        >
             <Image
                 src={product.image_url}
                 alt={product.name}

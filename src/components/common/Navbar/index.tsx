@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -14,6 +15,7 @@ import NavButton from '@/components/common/NavButton';
 import ProductSearchbar from '@/components/common/ProductSearchbar';
 
 import useIsMobile from '@/hooks/useIsMobile';
+import useMobileBreakpoint from '@/hooks/useMobileBreakpoint';
 
 import { pageName } from '@/constants';
 import navigation, { homeLink, userPages } from '@/constants/navigation';
@@ -58,9 +60,11 @@ const rightNavigation = navigation.filter(({ align }) => align === 'right');
 
 const Navbar: FC<NavbarProps> = ({ withSearch }) => {
     const theme = useTheme();
-    const isMobile = useIsMobile();
+    const isMobileCheck = useIsMobile();
+    const mobileBreakpoint = useMobileBreakpoint();
     const user = useUserStore(store => store.user);
     const doLogout = useUserStore(store => store.doLogout);
+    const pathname = usePathname();
 
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
@@ -75,18 +79,33 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
     };
 
     useEffect(() => {
-        if (!isMobile) {
+        if (!isMobileCheck) {
             setDrawerOpen(false);
         }
-    }, [isMobile]);
+    }, [isMobileCheck]);
 
     return (
         <HideOnScroll disabled>
             <AppBar position="sticky">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        {isMobile ? (
-                            <Box display="flex" alignItems="center" gap={1}>
+                        <Box
+                            sx={{
+                                display: 'none',
+                                [mobileBreakpoint]: {
+                                    display: 'flex',
+                                },
+                            }}
+                            alignItems="center"
+                            justifyContent="space-between"
+                            flex={1}
+                        >
+                            <Box
+                                display="flex"
+                                flexDirection="row"
+                                alignItems="center"
+                                gap={1}
+                            >
                                 <IconButton
                                     onClick={() => setDrawerOpen(true)}
                                     style={{
@@ -103,148 +122,176 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                                     {pageName}
                                 </Typography>
                             </Box>
-                        ) : (
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                gap={2}
-                                flex={1}
-                            >
-                                <Link href={homeLink}>
-                                    <Box
-                                        display="flex"
-                                        alignItems="center"
-                                        gap={1}
-                                    >
-                                        <NavbarAvatar>
-                                            <Image
-                                                src={Logo}
-                                                alt="Logo"
-                                                loading="lazy"
-                                                width={100}
-                                                height={100}
-                                                style={{
-                                                    width: '100%',
-                                                    height: 'auto',
-                                                }}
-                                            />
-                                        </NavbarAvatar>
-                                        <Typography
-                                            variant="h6"
-                                            color={
-                                                theme.palette.primary
-                                                    .contrastText
-                                            }
-                                            fontWeight="bold"
-                                        >
-                                            {pageName}
-                                        </Typography>
-                                    </Box>
-                                </Link>
-                                <Box
-                                    display="flex"
-                                    flex={1}
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                    gap={3}
-                                >
-                                    <Stack
-                                        direction="row"
-                                        spacing={1}
-                                        flex="0 1 auto"
-                                    >
-                                        {leftNavigation.map(
-                                            ({ href, title, Icon }) => (
-                                                <Link
-                                                    href={href}
-                                                    key={title}
-                                                    data-testid={`nav-${title.toLowerCase()}`}
-                                                >
-                                                    <NavButton
-                                                        Icon={Icon}
-                                                        title={title}
-                                                        href={href}
-                                                    />
-                                                </Link>
-                                            ),
-                                        )}
-                                    </Stack>
-                                    {withSearch ? (
-                                        <Box flex="1 1 auto" marginY={1}>
-                                            <ProductSearchbar
-                                                fullWidth
-                                                disableSpacing
-                                                zIndex={theme.zIndex.appBar + 1}
-                                            />
-                                        </Box>
-                                    ) : null}
-                                    <Stack
-                                        direction="row"
-                                        spacing={1}
-                                        justifyContent="flex-end"
-                                        flex="0 1 auto"
-                                    >
-                                        {rightNavigation.map(
-                                            ({ href, title, Icon }) => (
-                                                <Link
-                                                    href={href}
-                                                    key={title}
-                                                    data-testid={`nav-${title.toLowerCase()}`}
-                                                >
-                                                    <NavButton
-                                                        Icon={Icon}
-                                                        title={title}
-                                                        href={href}
-                                                    />
-                                                </Link>
-                                            ),
-                                        )}
-                                    </Stack>
-                                </Box>
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    gap={1}
-                                    marginLeft="auto"
-                                >
+                            <Box>
+                                {user?.picture_data_url?.length ? (
                                     <NavbarAvatar
-                                        src="/undraw_profile_picture.svg"
+                                        src={user.picture_data_url}
                                         radius={false}
                                         onClick={handleClickUser}
                                         style={{ cursor: 'pointer' }}
                                         data-testid="nav-user"
                                     />
-                                    {/* Doing padding like this for alignment is bad but i am lazy */}
-                                    <Box pt={0.5}>
+                                ) : (
+                                    <NavbarAvatar
+                                        src="/undraw_profile_picture.svg"
+                                        radius={false}
+                                        padding={0}
+                                        onClick={handleClickUser}
+                                        style={{ cursor: 'pointer' }}
+                                        data-testid="nav-user"
+                                    />
+                                )}
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                [mobileBreakpoint]: {
+                                    display: 'none',
+                                },
+                            }}
+                            alignItems="center"
+                            gap={2}
+                            flex={1}
+                        >
+                            <Link href={homeLink}>
+                                <Box display="flex" alignItems="center" gap={1}>
+                                    <NavbarAvatar padding={0}>
+                                        <Image
+                                            src={Logo}
+                                            alt="Logo"
+                                            loading="lazy"
+                                            width={100}
+                                            height={100}
+                                            style={{
+                                                width: '100%',
+                                                height: 'auto',
+                                            }}
+                                        />
+                                    </NavbarAvatar>
+                                    <Typography
+                                        variant="h6"
+                                        color={
+                                            theme.palette.primary.contrastText
+                                        }
+                                        fontWeight="bold"
+                                    >
+                                        {pageName}
+                                    </Typography>
+                                </Box>
+                            </Link>
+                            <Box
+                                display="flex"
+                                flex={1}
+                                justifyContent="space-between"
+                                alignItems="center"
+                                gap={3}
+                            >
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    flex="0 1 auto"
+                                >
+                                    {leftNavigation.map(
+                                        ({ href, title, Icon }) => (
+                                            <Link
+                                                href={href}
+                                                key={title}
+                                                data-testid={`nav-${title.toLowerCase()}`}
+                                            >
+                                                <NavButton
+                                                    Icon={Icon}
+                                                    title={title}
+                                                    href={href}
+                                                />
+                                            </Link>
+                                        ),
+                                    )}
+                                </Stack>
+                                {withSearch ? (
+                                    <Box flex="1 1 auto" marginY={1}>
+                                        <ProductSearchbar
+                                            fullWidth
+                                            disableSpacing
+                                            zIndex={theme.zIndex.appBar + 1}
+                                        />
+                                    </Box>
+                                ) : null}
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    justifyContent="flex-end"
+                                    flex="0 1 auto"
+                                >
+                                    {rightNavigation.map(
+                                        ({ href, title, Icon }) => (
+                                            <Link
+                                                href={href}
+                                                key={title}
+                                                data-testid={`nav-${title.toLowerCase()}`}
+                                            >
+                                                <NavButton
+                                                    Icon={Icon}
+                                                    title={title}
+                                                    href={href}
+                                                />
+                                            </Link>
+                                        ),
+                                    )}
+                                </Stack>
+                            </Box>
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                gap={1}
+                                marginLeft="auto"
+                            >
+                                {user?.picture_data_url?.length ? (
+                                    <NavbarAvatar
+                                        src={user.picture_data_url}
+                                        radius={false}
+                                        onClick={handleClickUser}
+                                        style={{ cursor: 'pointer' }}
+                                        data-testid="nav-user"
+                                    />
+                                ) : (
+                                    <NavbarAvatar
+                                        src="/undraw_profile_picture.svg"
+                                        radius={false}
+                                        padding={0}
+                                        onClick={handleClickUser}
+                                        style={{ cursor: 'pointer' }}
+                                        data-testid="nav-user"
+                                    />
+                                )}
+                                {/* Doing padding like this for alignment is bad but i am lazy */}
+                                <Box pt={0.5}>
+                                    <Typography
+                                        variant="body1"
+                                        fontWeight="bold"
+                                        lineHeight={1}
+                                        color={
+                                            theme.palette.primary.contrastText
+                                        }
+                                        data-testid="nav-username"
+                                    >
+                                        Hello, {user?.display_name || 'User'}
+                                    </Typography>
+                                    {user ? (
                                         <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            lineHeight={1}
+                                            variant="body2"
                                             color={
                                                 theme.palette.primary
                                                     .contrastText
                                             }
-                                            data-testid="nav-username"
+                                            data-testid="nav-email"
                                         >
-                                            Hello,{' '}
-                                            {user?.display_name || 'User'}
+                                            Account
                                         </Typography>
-                                        {user ? (
-                                            <Typography
-                                                variant="body2"
-                                                color={
-                                                    theme.palette.primary
-                                                        .contrastText
-                                                }
-                                                data-testid="nav-email"
-                                            >
-                                                Account
-                                            </Typography>
-                                        ) : null}
-                                    </Box>
+                                    ) : null}
                                 </Box>
                             </Box>
-                        )}
+                        </Box>
                     </Toolbar>
                 </Container>
                 <MobileNavbar
@@ -298,7 +345,10 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                         <ListItemText>Logout</ListItemText>
                     </MenuItem>
                     <Link
-                        href={userPages.login}
+                        href={{
+                            pathname: userPages.login,
+                            query: { redirect: pathname },
+                        }}
                         style={{ display: user ? 'none' : undefined }}
                         data-testid="nav-login"
                     >

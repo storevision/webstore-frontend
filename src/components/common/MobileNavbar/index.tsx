@@ -43,7 +43,7 @@ const MobileNavbar: FC<MobileNavbarProps> = ({ open, onClose }) => {
                     bgcolor={theme.palette.primary.main}
                     boxShadow={theme.shadows[3]}
                 >
-                    <NavbarAvatar>
+                    <NavbarAvatar padding={0}>
                         <Image
                             src={Logo}
                             alt="Logo"

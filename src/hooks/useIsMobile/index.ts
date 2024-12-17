@@ -1,6 +1,9 @@
-import { useMediaQuery, useTheme } from '@mui/material';
+import useMobileBreakpoint from '@/hooks/useMobileBreakpoint';
+
+import { useMediaQuery } from '@mui/material';
 
 export default function useIsMobile(): boolean {
-    const theme = useTheme();
-    return useMediaQuery(theme.breakpoints.down('md'));
+    const breakpoint = useMobileBreakpoint();
+
+    return useMediaQuery(breakpoint);
 }
