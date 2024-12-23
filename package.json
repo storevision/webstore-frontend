@@ -41,8 +41,8 @@
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@playwright/test": "^1.49.0",
     "@types/deepmerge": "^2.2.3",
-    "@types/node": "^20",
-    "@types/react": "19.0.1",
+    "@types/node": "^22",
+    "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
     "@types/react-slick": "^0.23.13",
     "@types/slick-carousel": "^1.6.40",
@@ -51,11 +51,11 @@
     "eslint": "^8",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
-    "eslint-config-next": "15.1.0",
+    "eslint-config-next": "15.1.2",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jest": "^28.9.0",
+    "eslint-plugin-jest": "^28.10.0",
     "eslint-plugin-mui-path-imports": "^0.0.15",
     "eslint-plugin-no-relative-import-paths": "^1.5.5",
     "eslint-plugin-prettier": "^5.2.1",
@@ -65,14 +65,14 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5 <5.6.0"
+    "typescript": "^5 <5.8.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "engines": {
     "node": ">=22"
   },
   "resolutions": {
-    "@types/react": "19.0.1",
+    "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2"
   },
   "license": "AGPL-3.0"
