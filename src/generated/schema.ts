@@ -1231,8 +1231,6 @@ export interface components {
             picture_data_url: string | null;
         };
         UserSettings: {
-            /** Format: int64 */
-            id: number;
             addresses: components["schemas"]["Address"][];
         };
         Address: {
