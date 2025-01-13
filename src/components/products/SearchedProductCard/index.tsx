@@ -7,7 +7,8 @@ import type { SearchedProducts } from '@/app/_api/products';
 
 import AddToCartButton from '@/components/products/AddToCartButton';
 
-import { currency } from '@/constants';
+import { formatMoney } from '@/utils/helpers';
+
 import { productPage } from '@/constants/navigation';
 
 import InfoIcon from '@mui/icons-material/Info';
@@ -66,7 +67,7 @@ const SearchedProductCard: FC<SearchedProductCardProps> = ({
                         {product.description}
                     </Typography>
                     <Typography variant="h6" color="primary">
-                        {product.price_per_unit} {currency}
+                        {formatMoney(product.price_per_unit)}
                     </Typography>
                 </CardContent>
                 <CardActions>

@@ -10,7 +10,7 @@ import { StyledForm } from '@/components/common/AuthPage';
 import { validateEmail } from '@/utils/validate';
 
 import { homeWithWelcome, userPages } from '@/constants/navigation';
-import { useUserStore } from '@/providers/userStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';

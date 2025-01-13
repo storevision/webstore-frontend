@@ -9,7 +9,7 @@ import ProductSlider from '@/components/products/ProductSlider';
 import { splitProductsByCategory } from '@/utils/helpers';
 
 import { categoryPage } from '@/constants/navigation';
-import { useProductsStore } from '@/providers/productsStoreProvider';
+import { useProductsStore } from '@/providers/ProductsStoreProvider';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';

@@ -19,7 +19,7 @@ import useMobileBreakpoint from '@/hooks/useMobileBreakpoint';
 
 import { pageName } from '@/constants';
 import navigation, { homeLink, userPages } from '@/constants/navigation';
-import { useUserStore } from '@/providers/userStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
 
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';

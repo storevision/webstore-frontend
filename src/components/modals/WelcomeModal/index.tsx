@@ -9,7 +9,7 @@ import BaseModal from '@/components/common/BaseModal';
 
 import { pageName } from '@/constants';
 import { userPages } from '@/constants/navigation';
-import { useUserStore } from '@/providers/userStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';

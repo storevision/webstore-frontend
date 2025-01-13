@@ -9,7 +9,8 @@ import type { Product } from '@/types';
 
 import AddToCartButton from '@/components/products/AddToCartButton';
 
-import { currency } from '@/constants';
+import { formatMoney } from '@/utils/helpers';
+
 import { productPage } from '@/constants/navigation';
 
 import InfoIcon from '@mui/icons-material/Info';
@@ -69,7 +70,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                         {product.description}
                     </Typography>
                     <Typography variant="h6">
-                        {product.price_per_unit} {currency}
+                        {formatMoney(product.price_per_unit)}
                     </Typography>
                 </CardContent>
                 <CardActions>

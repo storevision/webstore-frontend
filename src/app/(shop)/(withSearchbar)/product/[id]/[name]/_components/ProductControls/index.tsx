@@ -3,14 +3,16 @@
 import { useSearchParams } from 'next/navigation';
 
 import type { FC } from 'react';
+import { useState } from 'react';
 
 import type { GetProductByIdResponse } from '@/app/_api/products';
 
 import type { ExtractSuccessData } from '@/utils/api';
+import { getCurrencySymbol } from '@/utils/helpers';
 
-import { currency } from '@/constants';
-import { useProductsStore } from '@/providers/productsStoreProvider';
-import { useUserStore } from '@/providers/userStoreProvider';
+import { useCartStore } from '@/providers/CartStoreProvider';
+import { useProductsStore } from '@/providers/ProductsStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -31,11 +33,25 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
     const openReviewDialog = useProductsStore(store => store.openReviewDialog);
     const params = useSearchParams();
 
+    const [selectedQuantity, internalSetSelectedQuantity] = useState<number>(
+        product.stock ? 1 : 0,
+    );
+
+    const setSelectedQuantity = (quantity: number): void => {
+        internalSetSelectedQuantity(Math.min(product.stock, quantity));
+    };
+
+    const addToCart = useCartStore(store => store.addProductToCart);
+
     const disableHiding =
         canDisableHiding && params.get('disableHiding') === 'true';
 
     const userHasRated =
         reviews.some(review => review.user_id === userId) && !disableHiding;
+
+    const handleAddToCart = async (): Promise<void> => {
+        await addToCart(product.id, selectedQuantity);
+    };
 
     return (
         <Box
@@ -54,11 +70,12 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                     </Typography>
                     <Typography variant="body2" height="100%">
                         {Math.floor((product.price_per_unit % 1) * 100)}
-                        {currency}
+                        {getCurrencySymbol()}
                     </Typography>
                 </Box>
                 <Typography variant="body1">
-                    FREE shipping when you spend 50 {currency} or more
+                    FREE shipping when you spend 50 {getCurrencySymbol()} or
+                    more
                 </Typography>
             </Box>
             {typeof userId !== 'undefined' ? (
@@ -91,7 +108,7 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                 </>
             ) : (
                 <Typography variant="body2">
-                    Please log in to add a review.
+                    Please log in to order or add a review.
                 </Typography>
             )}
             <Box display="flex" flexDirection="column" gap={1}>
@@ -109,7 +126,6 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                     type="number"
                     variant="outlined"
                     size="small"
-                    defaultValue={product.stock ? 1 : 0}
                     slotProps={{
                         htmlInput: {
                             min: product.stock ? 1 : 0,
@@ -117,12 +133,16 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                         },
                     }}
                     disabled={product.stock === 0}
+                    onChange={e => setSelectedQuantity(Number(e.target.value))}
+                    value={selectedQuantity}
                 />
                 <Button
                     variant="contained"
                     color="primary"
-                    disabled={product.stock === 0}
-                    onClick={() => alert('oida')}
+                    disabled={
+                        product.stock === 0 || typeof userId === 'undefined'
+                    }
+                    onClick={handleAddToCart}
                 >
                     Add to cart
                 </Button>

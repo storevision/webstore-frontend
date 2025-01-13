@@ -10,7 +10,7 @@ import { StyledForm } from '@/components/common/AuthPage';
 import { validateEmail } from '@/utils/validate';
 
 import { homeLink, userPages } from '@/constants/navigation';
-import { useUserStore } from '@/providers/userStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
 
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';

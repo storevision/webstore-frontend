@@ -4,13 +4,15 @@ import { Inter } from 'next/font/google';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 
+import { getCartItems } from '@/app/_api/cart';
 import { getCategories } from '@/app/_api/categories';
 import { getProducts } from '@/app/_api/products';
 import { getUser } from '@/app/_api/users';
 
 import { pageDescription, pageName } from '@/constants';
-import { ProductsStoreProvider } from '@/providers/productsStoreProvider';
-import { UserStoreProvider } from '@/providers/userStoreProvider';
+import CartStoreProvider from '@/providers/CartStoreProvider';
+import ProductsStoreProvider from '@/providers/ProductsStoreProvider';
+import UserStoreProvider from '@/providers/UserStoreProvider';
 import theme from '@/theme';
 
 import './globals.css';
@@ -47,6 +49,9 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
         ? categoriesResponse.data
         : undefined;
 
+    const cartResponse = await getCartItems();
+    const cartItems = cartResponse?.success ? cartResponse.data : undefined;
+
     return (
         <html lang="en">
             <body className={`${interFont.variable}`}>
@@ -57,7 +62,9 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
                             <ProductsStoreProvider
                                 productsState={{ products, categories }}
                             >
-                                {children}
+                                <CartStoreProvider cartState={{ cartItems }}>
+                                    {children}
+                                </CartStoreProvider>
                             </ProductsStoreProvider>
                         </UserStoreProvider>
                     </ThemeProvider>

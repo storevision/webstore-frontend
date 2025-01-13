@@ -9,8 +9,8 @@ import type { GetProductByIdResponse } from '@/app/_api/products';
 
 import type { ExtractSuccessData } from '@/utils/api';
 
-import { useProductsStore } from '@/providers/productsStoreProvider';
-import { useUserStore } from '@/providers/userStoreProvider';
+import { useProductsStore } from '@/providers/ProductsStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
 
 import EditIcon from '@mui/icons-material/Edit';
 import Avatar from '@mui/material/Avatar';

@@ -37,6 +37,8 @@ export const ProductsStoreProvider: FC<ProductsStoreProviderProps> = ({
     );
 };
 
+export default ProductsStoreProvider;
+
 /* eslint-disable-next-line @typescript-eslint/comma-dangle */
 export const useProductsStore = <T,>(
     selector: (store: ProductsStore) => T,

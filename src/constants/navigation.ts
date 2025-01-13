@@ -1,8 +1,11 @@
 import type { LinkProps } from 'next/link';
 
+import type { FC } from 'react';
+
+import CartIconWithNumber from '@/components/wrapper/CartIconWithNumber';
+
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import CartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import type SvgIcon from '@mui/material/SvgIcon';
 
 export interface NavigationItem {
@@ -10,7 +13,7 @@ export interface NavigationItem {
     href: LinkProps['href'];
     props?: Omit<LinkProps, 'href'>;
     align?: 'left' | 'right';
-    Icon?: typeof SvgIcon;
+    Icon?: typeof SvgIcon | FC;
 }
 
 export type Navigation = NavigationItem[];
@@ -29,7 +32,7 @@ const navigation: Navigation = [
     {
         title: 'Cart',
         href: '/cart',
-        Icon: CartRoundedIcon,
+        Icon: CartIconWithNumber,
         align: 'right',
     },
 ];

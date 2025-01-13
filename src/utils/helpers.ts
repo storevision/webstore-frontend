@@ -2,6 +2,8 @@ import type { SearchedProducts } from '@/app/_api/products';
 
 import type { Category, Product } from '@/types';
 
+import { currency } from '@/constants';
+
 export type SplittedProducts = Record<Category['name'], Product[]>;
 
 export const splitProductsByCategory = (
@@ -112,3 +114,29 @@ export const sortProducts = <T = Product[] | SearchedProducts>(
 
     return (products as Product[]).sort(algorithm) as T;
 };
+
+const defaultLocale = 'de-AT';
+
+const useBrowserLocale = false;
+
+export const formatMoney = (amount: number): string => {
+    // first, if browser, get the locale from the browser
+    let locale = defaultLocale;
+
+    if (typeof window !== 'undefined' && useBrowserLocale) {
+        locale = window.navigator.language;
+    }
+
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency,
+    }).format(amount);
+};
+
+export const getCurrencySymbol = (): string =>
+    new Intl.NumberFormat(defaultLocale, {
+        style: 'currency',
+        currency,
+    })
+        .format(0)
+        .replace(/[0-9\s.,]/g, '');

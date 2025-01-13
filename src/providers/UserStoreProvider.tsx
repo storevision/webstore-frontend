@@ -35,6 +35,8 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({
     );
 };
 
+export default UserStoreProvider;
+
 /* eslint-disable-next-line @typescript-eslint/comma-dangle */
 export const useUserStore = <T,>(selector: (store: UserStore) => T): T => {
     const store = useContext(UserStoreContext);

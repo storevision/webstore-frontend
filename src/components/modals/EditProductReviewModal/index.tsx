@@ -7,8 +7,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import BaseModal from '@/components/common/BaseModal';
 
-import { useProductsStore } from '@/providers/productsStoreProvider';
-import { useUserStore } from '@/providers/userStoreProvider';
+import { useProductsStore } from '@/providers/ProductsStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import Avatar from '@mui/material/Avatar';

@@ -10,7 +10,7 @@ import type { Product } from '@/types';
 import { mapProductsAndCategories } from '@/utils/helpers';
 
 import { productPage, searchPage } from '@/constants/navigation';
-import { useProductsStore } from '@/providers/productsStoreProvider';
+import { useProductsStore } from '@/providers/ProductsStoreProvider';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { darken, lighten, styled, useTheme } from '@mui/material';

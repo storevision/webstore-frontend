@@ -2,6 +2,9 @@
 
 import type { FC } from 'react';
 
+import { useCartStore } from '@/providers/CartStoreProvider';
+import { useUserStore } from '@/providers/UserStoreProvider';
+
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 
@@ -10,10 +13,18 @@ export interface AddToCartButtonProps {
 }
 
 const AddToCartButton: FC<AddToCartButtonProps> = ({ productId }) => {
-    const handleClick = (): void => {
-        // eslint-disable-next-line no-alert
-        alert(`Add to cart clicked with id ${productId}`);
+    const addToCart = useCartStore(store => store.addProductToCart);
+    const userLoggedIn = useUserStore(
+        store => typeof store.user?.id !== 'undefined',
+    );
+
+    const handleClick = async (): Promise<void> => {
+        await addToCart(productId, 1);
     };
+
+    if (!userLoggedIn) {
+        return null;
+    }
 
     return (
         <Button size="small" startIcon={<AddIcon />} onClick={handleClick}>
