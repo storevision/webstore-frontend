@@ -122,6 +122,7 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                     variant="contained"
                     color="primary"
                     disabled={product.stock === 0}
+                    onClick={() => alert('oida')}
                 >
                     Add to cart
                 </Button>
