@@ -26,6 +26,8 @@ test('ordering items should work', async ({ page, context }) => {
 
     await page.waitForLoadState('networkidle');
 
+    await page.waitForURL('http://localhost:3000/');
+
     await expect(page).toHaveURL('http://localhost:3000/');
 
     await expect(page.getByTestId('welcome-modal')).toBeVisible();

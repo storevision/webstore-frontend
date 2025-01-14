@@ -26,6 +26,9 @@ test('register and login should work', async ({ page, context }) => {
 
     await loginButton.click();
 
+    // wait for url to change
+    await page.waitForURL('http://localhost:3000/login?redirect=%2F');
+
     // assert the URL is correct
     await expect(page).toHaveURL('http://localhost:3000/login?redirect=%2F');
 
