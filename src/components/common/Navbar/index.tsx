@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -65,6 +65,7 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
     const user = useUserStore(store => store.user);
     const doLogout = useUserStore(store => store.doLogout);
     const pathname = usePathname();
+    const router = useRouter();
 
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
@@ -326,6 +327,10 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                     <MenuItem
                         style={{ display: !user ? 'none' : undefined }}
                         data-testid="nav-profile"
+                        onClick={() => {
+                            router.push(userPages.profile);
+                            handleCloseUser();
+                        }}
                     >
                         <ListItemIcon>
                             <ProfileIcon />

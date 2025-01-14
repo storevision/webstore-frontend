@@ -7,7 +7,7 @@ import React from 'react';
 import { getCartItems } from '@/app/_api/cart';
 import { getCategories } from '@/app/_api/categories';
 import { getProducts } from '@/app/_api/products';
-import { getUser } from '@/app/_api/users';
+import { getUser, getUserSettings } from '@/app/_api/users';
 
 import { pageDescription, pageName } from '@/constants';
 import CartStoreProvider from '@/providers/CartStoreProvider';
@@ -39,6 +39,11 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
     const userResponse = await getUser();
     const user = userResponse?.success ? userResponse.data : undefined;
 
+    const userSettingsResponse = await getUserSettings();
+    const userSettings = userSettingsResponse?.success
+        ? userSettingsResponse.data
+        : undefined;
+
     const productsResponse = await getProducts();
     const products = productsResponse?.success
         ? productsResponse.data
@@ -58,7 +63,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
                 <AppRouterCacheProvider>
                     <ThemeProvider theme={theme}>
                         <CssBaseline enableColorScheme />
-                        <UserStoreProvider userState={{ user }}>
+                        <UserStoreProvider userState={{ user, userSettings }}>
                             <ProductsStoreProvider
                                 productsState={{ products, categories }}
                             >

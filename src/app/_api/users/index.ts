@@ -84,3 +84,55 @@ const pLogout = async () => {
 export type LogoutResponse = Awaited<ReturnType<typeof pLogout>> | undefined;
 
 export const logout: () => Promise<LogoutResponse> = pLogout;
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const pGetUserSettings = async () => {
+    const cookie = await getCookies();
+
+    const { data, error, response } = await api.GET('/users/settings', {
+        headers: {
+            cookie,
+        },
+    });
+
+    if (error) {
+        return { ...error, response };
+    }
+
+    return data;
+};
+
+export type GetUserSettingsResponse =
+    | Awaited<ReturnType<typeof pGetUserSettings>>
+    | undefined;
+
+export const getUserSettings: () => Promise<GetUserSettingsResponse> =
+    pGetUserSettings;
+
+export type UpdateUserSettingsArgs = RequestBody<'/users/settings'>;
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const pUpdateUserSettings = async (body: UpdateUserSettingsArgs) => {
+    const cookie = await getCookies();
+
+    const { data, error, response } = await api.POST('/users/settings', {
+        body,
+        headers: {
+            cookie,
+        },
+    });
+
+    if (error) {
+        return { ...error, response };
+    }
+
+    return data;
+};
+
+export type UpdateUserSettingsResponse =
+    | Awaited<ReturnType<typeof pUpdateUserSettings>>
+    | undefined;
+
+export const updateUserSettings: (
+    body: UpdateUserSettingsArgs,
+) => Promise<UpdateUserSettingsResponse> = pUpdateUserSettings;
