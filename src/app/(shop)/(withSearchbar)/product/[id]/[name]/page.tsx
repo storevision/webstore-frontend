@@ -74,9 +74,11 @@ const ProductPage: NextPage<ProductPageProps> = async ({ params }) => {
                                 value={product.average_rating}
                                 readOnly
                                 precision={0.5}
+                                data-testid="average-rating"
                             />
-                            <Typography variant="h6">
-                                {reviews.length} reviews
+                            <Typography variant="h6" data-testid="review-count">
+                                {reviews.length}{' '}
+                                {reviews.length === 1 ? 'review' : 'reviews'}
                             </Typography>
                         </Box>
                         <Typography variant="subtitle1">

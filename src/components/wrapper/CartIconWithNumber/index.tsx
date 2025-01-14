@@ -13,7 +13,11 @@ const CartIconWithNumber: FC = () => {
     );
 
     return (
-        <Badge badgeContent={cartItems} color="secondary">
+        <Badge
+            badgeContent={cartItems}
+            color="secondary"
+            data-testid="cart-icon"
+        >
             <CartRoundedIcon />
         </Badge>
     );

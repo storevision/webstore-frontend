@@ -80,6 +80,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                         onClick={() =>
                             router.push(productPage(product.id, product.name))
                         }
+                        data-testid="learn-more-button"
                     >
                         Learn More
                     </Button>

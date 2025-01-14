@@ -81,12 +81,19 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
             {typeof userId !== 'undefined' ? (
                 <>
                     {userHasRated ? (
-                        <Typography variant="body2" fontWeight="bold">
+                        <Typography
+                            variant="body2"
+                            fontWeight="bold"
+                            data-testid="already-rated"
+                        >
                             You have already rated this product
                         </Typography>
                     ) : (
                         <Box>
-                            <Typography variant="h6">
+                            <Typography
+                                variant="h6"
+                                data-testid="add-review-text"
+                            >
                                 Add your review
                             </Typography>
                             <Typography variant="body2">
@@ -102,6 +109,7 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                                         });
                                     }
                                 }}
+                                data-testid="rating"
                             />
                         </Box>
                     )}
@@ -113,11 +121,19 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
             )}
             <Box display="flex" flexDirection="column" gap={1}>
                 {product.stock === 0 ? (
-                    <Typography variant="h6" color="error">
+                    <Typography
+                        variant="h6"
+                        color="error"
+                        data-testid="out-of-stock"
+                    >
                         Out of stock
                     </Typography>
                 ) : (
-                    <Typography variant="h6" color="success">
+                    <Typography
+                        variant="h6"
+                        color="success"
+                        data-testid="in-stock"
+                    >
                         In stock
                     </Typography>
                 )}
@@ -130,6 +146,7 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                         htmlInput: {
                             min: product.stock ? 1 : 0,
                             max: product.stock,
+                            'data-testid': 'quantity-input',
                         },
                     }}
                     disabled={product.stock === 0}
@@ -143,6 +160,7 @@ const ProductControls: FC<ProductControlsProps> = ({ product, reviews }) => {
                         product.stock === 0 || typeof userId === 'undefined'
                     }
                     onClick={handleAddToCart}
+                    data-testid="add-to-cart-button"
                 >
                     Add to cart
                 </Button>

@@ -27,7 +27,12 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({ productId }) => {
     }
 
     return (
-        <Button size="small" startIcon={<AddIcon />} onClick={handleClick}>
+        <Button
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={handleClick}
+            data-testid="add-to-cart-button"
+        >
             Add to cart
         </Button>
     );

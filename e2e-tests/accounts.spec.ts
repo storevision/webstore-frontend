@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('should navigate to the login page', async ({ page, context }) => {
+test('register and login should work', async ({ page, context }) => {
     const user = {
         email: `test+${Date.now()}+${context.browser()?.browserType().name()}@example.com`,
         displayName: `Test User${Date.now()}`,
@@ -130,6 +130,8 @@ test('should navigate to the login page', async ({ page, context }) => {
 
     // submit the form
     await page.click('[data-testid=register-button]');
+
+    await page.waitForLoadState('networkidle');
 
     // assert the URL is correct
     await expect(page).toHaveURL('http://localhost:3000/');

@@ -74,6 +74,7 @@ const AddProductReviewModal: FC = () => {
             open={reviewDialogOpen !== null}
             onClose={closeReviewDialog}
             title="Add a review"
+            testID="add-review-modal"
         >
             {reviewDialogOpen ? (
                 <form onSubmit={handleSendReview}>
@@ -115,6 +116,7 @@ const AddProductReviewModal: FC = () => {
                                         setRating(newValue)
                                     }
                                     size="large"
+                                    data-testid="add-review-rating"
                                 />
                             </Box>
                         </Box>
