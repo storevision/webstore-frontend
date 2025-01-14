@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { Metadata, NextPage } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getUserSettings } from '@/app/_api/users';
@@ -9,6 +9,10 @@ import { userPages } from '@/constants/navigation';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+
+export const metadata: Metadata = {
+    title: 'Profile',
+};
 
 const ProfilePage: NextPage = async () => {
     const userSettingsResponse = await getUserSettings();

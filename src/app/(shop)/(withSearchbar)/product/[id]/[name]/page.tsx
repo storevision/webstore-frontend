@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { Metadata, NextPage } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getProductById } from '@/app/_api/products';
@@ -20,6 +20,26 @@ export interface ProductPageProps {
         id?: string;
     }>;
 }
+
+export const generateMetadata = async ({
+    params,
+}: ProductPageProps): Promise<Metadata> => {
+    const { id } = await params;
+
+    if (!id) {
+        redirect(homeLink);
+    }
+
+    const productResponse = await getProductById(id);
+
+    if (!productResponse.success) {
+        redirect(homeLink);
+    }
+
+    return {
+        title: productResponse.data.product.name,
+    };
+};
 
 const ProductPage: NextPage<ProductPageProps> = async ({ params }) => {
     const { id } = await params;
