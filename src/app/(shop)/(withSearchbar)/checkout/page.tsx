@@ -5,17 +5,9 @@ import { getCartItems } from '@/app/_api/cart';
 import { getUserSettings } from '@/app/_api/users';
 import CheckoutForm from '@/app/(shop)/(withSearchbar)/checkout/_components/CheckoutForm';
 
-import { formatMoney } from '@/utils/helpers';
-
 import { homeLink, userPages } from '@/constants/navigation';
 
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import Radio from '@mui/material/Radio';
 import Typography from '@mui/material/Typography';
 
 export const metadata: Metadata = {

@@ -1,8 +1,6 @@
 import type { Metadata, NextPage } from 'next';
 import { redirect } from 'next/navigation';
 
-import moment from 'moment/moment';
-
 import { getOrders } from '@/app/_api/orders';
 import OrderItem from '@/app/(shop)/(withSearchbar)/orders/_components/OrderItem';
 

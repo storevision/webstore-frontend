@@ -1,4 +1,7 @@
+'use client';
+
 import type { FC } from 'react';
+import { useMemo } from 'react';
 
 import moment from 'moment';
 
@@ -16,31 +19,36 @@ export interface OrderItemProps {
     order: ExtractSuccessData<GetOrdersResponse>[number];
 }
 
-const OrderItem: FC<OrderItemProps> = ({ order }) => (
-    <ListItem key={order.id} sx={{ padding: 2 }}>
-        <ListItemText
-            primary={`Order #${order.id}`}
-            secondary={`Ordered on ${moment(order.created_at).format(
-                'MMMM Do YYYY, h:mm:ss a',
-            )}`}
-        />
-        <Box display="flex" flexDirection="column" alignItems="flex-end">
-            <Typography variant="h6">
-                {order.items.reduce((acc, item) => acc + item.quantity, 0)}{' '}
-                items
-            </Typography>
-            <Typography variant="h6">
-                Total:{' '}
-                {formatMoney(
-                    order.items.reduce(
-                        (acc, item) =>
-                            acc + item.price_per_unit * item.quantity,
-                        0,
-                    ),
-                )}
-            </Typography>
-        </Box>
-    </ListItem>
-);
+const OrderItem: FC<OrderItemProps> = ({ order }) => {
+    const formattedTime = useMemo(
+        () => moment(order.created_at).format('MMMM Do YYYY, h:mm:ss a'),
+        [order.created_at],
+    );
+
+    return (
+        <ListItem key={order.id} sx={{ padding: 2 }}>
+            <ListItemText
+                primary={`Order #${order.id}`}
+                secondary={`Ordered on ${formattedTime}`}
+            />
+            <Box display="flex" flexDirection="column" alignItems="flex-end">
+                <Typography variant="h6">
+                    {order.items.reduce((acc, item) => acc + item.quantity, 0)}{' '}
+                    items
+                </Typography>
+                <Typography variant="h6">
+                    Total:{' '}
+                    {formatMoney(
+                        order.items.reduce(
+                            (acc, item) =>
+                                acc + item.price_per_unit * item.quantity,
+                            0,
+                        ),
+                    )}
+                </Typography>
+            </Box>
+        </ListItem>
+    );
+};
 
 export default OrderItem;

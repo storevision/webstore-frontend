@@ -18,11 +18,7 @@ import useIsMobile from '@/hooks/useIsMobile';
 import useMobileBreakpoint from '@/hooks/useMobileBreakpoint';
 
 import { pageName } from '@/constants';
-import navigation, {
-    homeLink,
-    ordersLink,
-    userPages,
-} from '@/constants/navigation';
+import navigation, { homeLink, userPages } from '@/constants/navigation';
 import { useUserStore } from '@/providers/UserStoreProvider';
 
 import ProfileIcon from '@mui/icons-material/AccountCircle';
