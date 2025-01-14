@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import type { FC } from 'react';
 import { useState } from 'react';
@@ -41,6 +41,9 @@ const UserAddresses: FC = () => {
     const [newPostalCode, setNewPostalCode] = useState<string>('');
     const [newCountry, setNewCountry] = useState<string>('');
 
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+
     const handleResetForm = (): void => {
         setNewName('');
         setNewAddress('');
@@ -76,6 +79,13 @@ const UserAddresses: FC = () => {
         if (!result || !result.success) {
             setError(result?.error ?? 'An unknown error occurred');
             return;
+        }
+
+        if (searchParams.has('hasAddresses')) {
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.delete('hasAddresses');
+
+            router.push(`${pathname}?${newSearchParams.toString()}`);
         }
 
         handleResetForm();
@@ -167,50 +177,75 @@ const UserAddresses: FC = () => {
                 <Typography variant="h6" mb={1}>
                     Add a new address
                 </Typography>
-                <Box display="flex" flexDirection="column" gap={1}>
-                    <TextField
-                        label="Name"
-                        value={newName}
-                        onChange={e => setNewName(e.target.value)}
-                        type="text"
-                    />
-                    <TextField
-                        label="Address"
-                        value={newAddress}
-                        onChange={e => setNewAddress(e.target.value)}
-                        type="text"
-                    />
-                    <TextField
-                        label="City"
-                        value={newCity}
-                        onChange={e => setNewCity(e.target.value)}
-                        type="text"
-                    />
-                    <TextField
-                        label="State"
-                        value={newState}
-                        onChange={e => setNewState(e.target.value)}
-                        type="text"
-                    />
-                    <TextField
-                        label="Postal Code"
-                        value={newPostalCode}
-                        onChange={e => setNewPostalCode(e.target.value)}
-                        type="text"
-                    />
-                    <TextField
-                        label="Country"
-                        value={newCountry}
-                        onChange={e => setNewCountry(e.target.value)}
-                        type="text"
-                    />
-                    <Button onClick={handleSaveAddress} variant="contained">
-                        Save Address
-                    </Button>
-                    {error ? (
-                        <Typography color="error">{error}</Typography>
-                    ) : null}
-                </Box>
+                <form
+                    onSubmit={e => {
+                        e.preventDefault();
+                        handleSaveAddress();
+                    }}
+                >
+                    <Box display="flex" flexDirection="column" gap={1}>
+                        <TextField
+                            label="Name"
+                            value={newName}
+                            onChange={e => setNewName(e.target.value)}
+                            type="text"
+                        />
+                        <TextField
+                            label="Address"
+                            value={newAddress}
+                            onChange={e => setNewAddress(e.target.value)}
+                            type="text"
+                        />
+                        <Box
+                            flex={1}
+                            display="flex"
+                            flexDirection="row"
+                            gap={1}
+                        >
+                            <TextField
+                                label="Postal Code"
+                                value={newPostalCode}
+                                onChange={e => setNewPostalCode(e.target.value)}
+                                type="text"
+                                fullWidth
+                            />
+                            <TextField
+                                label="City"
+                                value={newCity}
+                                onChange={e => setNewCity(e.target.value)}
+                                type="text"
+                                fullWidth
+                            />
+                        </Box>
+                        <Box
+                            flex={1}
+                            display="flex"
+                            flexDirection="row"
+                            gap={1}
+                        >
+                            <TextField
+                                label="State"
+                                value={newState}
+                                onChange={e => setNewState(e.target.value)}
+                                type="text"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Country"
+                                value={newCountry}
+                                onChange={e => setNewCountry(e.target.value)}
+                                type="text"
+                                fullWidth
+                            />
+                        </Box>
+                        <Button variant="contained" type="submit">
+                            Save Address
+                        </Button>
+                        {error ? (
+                            <Typography color="error">{error}</Typography>
+                        ) : null}
+                    </Box>
+                </form>
             </Paper>
         </Box>
     );

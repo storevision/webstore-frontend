@@ -15,9 +15,9 @@ export const getCartItems = async () => {
 
     if (error) {
         return {
-            ...(typeof error === 'undefined'
+            ...(typeof error !== 'undefined'
                 ? error
-                : ({ success: false } as const)),
+                : ({ success: false, error: 'Unknown error' } as const)),
             response,
         };
     }
@@ -42,9 +42,9 @@ export const addProductToCart = async (args: CartAddArgs) => {
 
     if (error) {
         return {
-            ...(typeof error === 'undefined'
+            ...(typeof error !== 'undefined'
                 ? error
-                : ({ success: false } as const)),
+                : ({ success: false, error: 'Unknown error' } as const)),
             response,
         };
     }
@@ -71,9 +71,9 @@ export const removeProductFromCart = async (args: CartRemoveArgs) => {
 
     if (error) {
         return {
-            ...(typeof error === 'undefined'
+            ...(typeof error !== 'undefined'
                 ? error
-                : ({ success: false } as const)),
+                : ({ success: false, error: 'Unknown error' } as const)),
             response,
         };
     }
@@ -97,9 +97,9 @@ export const clearCart = async () => {
 
     if (error) {
         return {
-            ...(typeof error === 'undefined'
+            ...(typeof error !== 'undefined'
                 ? error
-                : ({ success: false } as const)),
+                : ({ success: false, error: 'Unknown error' } as const)),
             response,
         };
     }
@@ -108,3 +108,30 @@ export const clearCart = async () => {
 };
 
 export type ClearCartResponse = Awaited<ReturnType<typeof clearCart>>;
+
+export type CartCheckoutArgs = RequestBody<'/cart/checkout'>;
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const cartCheckout = async (args: CartCheckoutArgs) => {
+    const cookie = await getCookies();
+
+    const { data, error, response } = await api.POST('/cart/checkout', {
+        body: args,
+        headers: {
+            cookie,
+        },
+    });
+
+    if (error) {
+        return {
+            ...(typeof error !== 'undefined'
+                ? error
+                : ({ success: false, error: 'Unknown error' } as const)),
+            response,
+        };
+    }
+
+    return data;
+};
+
+export type CartCheckoutResponse = Awaited<ReturnType<typeof cartCheckout>>;

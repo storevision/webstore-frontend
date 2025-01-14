@@ -1,4 +1,5 @@
 import type { Metadata, NextPage } from 'next';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCartItems } from '@/app/_api/cart';
@@ -6,9 +7,12 @@ import CartItem from '@/app/(shop)/(withSearchbar)/cart/_components/CartItem';
 
 import { formatMoney } from '@/utils/helpers';
 
+import { checkoutLink, homeLink } from '@/constants/navigation';
+
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
 export const metadata: Metadata = {
@@ -19,7 +23,7 @@ const CartPage: NextPage = async () => {
     const cartItemsResponse = await getCartItems();
 
     if (!cartItemsResponse.success) {
-        redirect('/shop');
+        redirect(homeLink);
     }
 
     const { data: cartItems } = cartItemsResponse;
@@ -28,6 +32,8 @@ const CartPage: NextPage = async () => {
         (acc, item) => acc + item.product.price_per_unit * item.quantity,
         0,
     );
+
+    const disableCart = cartItems.length === 0;
 
     return (
         <Box
@@ -46,13 +52,22 @@ const CartPage: NextPage = async () => {
                 mb={2}
             >
                 <Typography variant="h1">Cart</Typography>
-                <Button
-                    endIcon={<ShoppingCartCheckoutIcon />}
-                    variant="contained"
-                    color="primary"
+                <Link
+                    href={checkoutLink}
+                    className={disableCart ? 'disabled' : ''}
+                    aria-disabled={disableCart}
+                    tabIndex={disableCart ? -1 : undefined}
+                    style={{ pointerEvents: disableCart ? 'none' : 'auto' }}
                 >
-                    Checkout ({formatMoney(totalPrice)})
-                </Button>
+                    <Button
+                        endIcon={<ShoppingCartCheckoutIcon />}
+                        variant="contained"
+                        color="primary"
+                        disabled={disableCart}
+                    >
+                        Checkout ({formatMoney(totalPrice)})
+                    </Button>
+                </Link>
             </Box>
             <Box display="flex" flexDirection="column" gap={1}>
                 {cartItems.map(item => (
@@ -65,7 +80,44 @@ const CartPage: NextPage = async () => {
                     <Typography variant="h6" textAlign="center">
                         Your cart is empty!
                     </Typography>
-                ) : null}
+                ) : (
+                    <>
+                        <Divider />
+                        <Box display="flex" flexDirection="column" gap={1}>
+                            <Box
+                                display="flex"
+                                flexDirection="row"
+                                justifyContent="space-between"
+                            >
+                                <Typography variant="h6">Total</Typography>
+                                <Typography variant="h6">
+                                    {formatMoney(totalPrice)}
+                                </Typography>
+                            </Box>
+                            <Link
+                                href={checkoutLink}
+                                className={disableCart ? 'disabled' : ''}
+                                aria-disabled={disableCart}
+                                tabIndex={disableCart ? -1 : undefined}
+                                style={{
+                                    pointerEvents: disableCart
+                                        ? 'none'
+                                        : 'auto',
+                                }}
+                            >
+                                <Button
+                                    endIcon={<ShoppingCartCheckoutIcon />}
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={disableCart}
+                                    fullWidth
+                                >
+                                    Checkout ({formatMoney(totalPrice)})
+                                </Button>
+                            </Link>
+                        </Box>
+                    </>
+                )}
             </Box>
         </Box>
     );

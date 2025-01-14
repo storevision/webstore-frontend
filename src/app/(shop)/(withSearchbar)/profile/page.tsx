@@ -14,7 +14,13 @@ export const metadata: Metadata = {
     title: 'Profile',
 };
 
-const ProfilePage: NextPage = async () => {
+export interface ProfilePageProps {
+    searchParams: Promise<{
+        hasAddresses?: boolean;
+    }>;
+}
+
+const ProfilePage: NextPage<ProfilePageProps> = async ({ searchParams }) => {
     const userSettingsResponse = await getUserSettings();
     const userSettings = userSettingsResponse?.success
         ? userSettingsResponse.data
@@ -24,11 +30,24 @@ const ProfilePage: NextPage = async () => {
         redirect(`${userPages.login}?redirect=${userPages.profile}`);
     }
 
+    const { hasAddresses } = await searchParams;
+
     return (
         <Box>
             <Typography variant="h1" mb={2}>
                 Profile Page
             </Typography>
+            {hasAddresses ? (
+                <Box
+                    bgcolor="error.main"
+                    color="error.contrastText"
+                    p={2}
+                    mb={2}
+                    borderRadius={4}
+                >
+                    You need to add an address to checkout!
+                </Box>
+            ) : null}
             <Box mb={2}>
                 <Paper elevation={0} sx={{ padding: 2, borderRadius: 4 }}>
                     <Typography variant="h4" mb={1}>

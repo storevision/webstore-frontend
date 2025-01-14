@@ -4,12 +4,15 @@ import { createStore } from 'zustand';
 
 import type {
     AddProductToCartResponse,
+    CartCheckoutArgs,
+    CartCheckoutResponse,
     ClearCartResponse,
     GetCartItemsResponse,
     RemoveProductFromCartResponse,
 } from '@/app/_api/cart';
 import {
     addProductToCart,
+    cartCheckout,
     clearCart,
     getCartItems,
     removeProductFromCart,
@@ -34,6 +37,7 @@ export interface CartActions {
         quantity: number,
     ) => Promise<RemoveProductFromCartResponse>;
     clearCart: () => Promise<ClearCartResponse>;
+    doCheckout: (args: CartCheckoutArgs) => Promise<CartCheckoutResponse>;
 }
 
 export type CartStore = CartState & CartActions;
@@ -126,6 +130,15 @@ export const createCartStore = (
         },
         clearCart: async () => {
             const response = await clearCart();
+
+            if (response.success) {
+                set({ cartItems: [] });
+            }
+
+            return response;
+        },
+        doCheckout: async args => {
+            const response = await cartCheckout(args);
 
             if (response.success) {
                 set({ cartItems: [] });

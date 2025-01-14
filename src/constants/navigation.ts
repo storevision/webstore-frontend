@@ -61,6 +61,8 @@ export const categoryPage = (id: number, name: string): string =>
 export const isCategoryPage = (path: string): boolean =>
     /^\/category\/\d+\/[a-z0-9-]+$/i.test(path);
 
+export const checkoutLink = '/checkout';
+
 export const userPages = {
     login: '/login',
     register: '/register',
