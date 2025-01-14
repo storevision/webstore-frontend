@@ -68,6 +68,7 @@ export const userPages = {
     register: '/register',
     account: '/account',
     profile: '/profile',
+    orders: '/orders',
 } as const;
 
 export default navigation;

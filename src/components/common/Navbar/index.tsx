@@ -18,12 +18,17 @@ import useIsMobile from '@/hooks/useIsMobile';
 import useMobileBreakpoint from '@/hooks/useMobileBreakpoint';
 
 import { pageName } from '@/constants';
-import navigation, { homeLink, userPages } from '@/constants/navigation';
+import navigation, {
+    homeLink,
+    ordersLink,
+    userPages,
+} from '@/constants/navigation';
 import { useUserStore } from '@/providers/UserStoreProvider';
 
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import OrdersIcon from '@mui/icons-material/ShoppingCart';
 import type { SlideProps } from '@mui/material';
 import { useScrollTrigger, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -336,6 +341,19 @@ const Navbar: FC<NavbarProps> = ({ withSearch }) => {
                             <ProfileIcon />
                         </ListItemIcon>
                         <ListItemText>Profile</ListItemText>
+                    </MenuItem>
+                    <MenuItem
+                        style={{ display: !user ? 'none' : undefined }}
+                        data-testid="nav-orders"
+                        onClick={() => {
+                            router.push(userPages.orders);
+                            handleCloseUser();
+                        }}
+                    >
+                        <ListItemIcon>
+                            <OrdersIcon />
+                        </ListItemIcon>
+                        <ListItemText>Orders</ListItemText>
                     </MenuItem>
                     <MenuItem
                         onClick={() => {
