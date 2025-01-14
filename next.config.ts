@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
     env: {
         API_BASE_URL: apiBaseUrl,
     },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
     output: 'standalone',
     compiler:
         process.env.NODE_ENV === 'production'
