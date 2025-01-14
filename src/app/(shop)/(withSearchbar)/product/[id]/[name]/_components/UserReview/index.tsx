@@ -51,7 +51,13 @@ const UserReview: FC<UserReviewProps> = ({ review }) => {
     };
 
     return (
-        <Box display="flex" gap={2} mb={2} flexDirection="row">
+        <Box
+            display="flex"
+            gap={2}
+            mb={2}
+            flexDirection="row"
+            data-testid="user-review"
+        >
             <Box mt={1}>
                 {review.user_picture_data_url ? (
                     <Avatar

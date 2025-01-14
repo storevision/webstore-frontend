@@ -78,6 +78,8 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ userSettings, cartItems }) => {
                             <ListItemButton
                                 sx={{ borderRadius: 2 }}
                                 onClick={() => setSelectedAddressIndex(index)}
+                                data-testid={`checkout-address-${index}`}
+                                data-index={index}
                             >
                                 <Radio
                                     sx={{ mr: 1 }}
@@ -85,10 +87,12 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ userSettings, cartItems }) => {
                                         setSelectedAddressIndex(index)
                                     }
                                     checked={selectedAddressIndex === index}
+                                    data-testid={`checkout-address-${index}-radio`}
                                 />
                                 <ListItemText
                                     primary={address.name}
                                     secondary={`${address.address}, ${address.postal_code} ${address.city}, ${address.state}, ${address.country}`}
+                                    data-testid={`checkout-address-${index}-text`}
                                 />
                             </ListItemButton>
                         </ListItem>
@@ -115,6 +119,7 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ userSettings, cartItems }) => {
                     color="primary"
                     fullWidth
                     startIcon={<PayIcon />}
+                    data-testid="checkout-button"
                 >
                     Give us your money! ({formatMoney(totalPrice)})
                 </Button>

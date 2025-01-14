@@ -26,7 +26,7 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
     );
 
     return (
-        <ListItem key={order.id} sx={{ padding: 2 }}>
+        <ListItem key={order.id} sx={{ padding: 2 }} data-testid="order-item">
             <ListItemText
                 primary={`Order #${order.id}`}
                 secondary={`Ordered on ${formattedTime}`}

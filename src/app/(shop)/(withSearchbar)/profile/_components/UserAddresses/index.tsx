@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import type { FC } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { useUserStore } from '@/providers/UserStoreProvider';
 
@@ -11,6 +11,7 @@ import TrashIcon from '@mui/icons-material/Delete';
 import { alpha, styled } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -32,6 +33,7 @@ const UserAddresses: FC = () => {
 
     const router = useRouter();
 
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     const [newName, setNewName] = useState<string>('');
@@ -54,12 +56,13 @@ const UserAddresses: FC = () => {
     };
 
     const handleSaveAddress = async (): Promise<void> => {
-        setError(null);
-
         if (!currentSettings) {
             setError('An unknown error occurred');
             return;
         }
+
+        setError(null);
+        setLoading(true);
 
         const result = await updateUserSettings({
             ...currentSettings,
@@ -77,6 +80,7 @@ const UserAddresses: FC = () => {
         });
 
         if (!result || !result.success) {
+            setLoading(false);
             setError(result?.error ?? 'An unknown error occurred');
             return;
         }
@@ -91,6 +95,7 @@ const UserAddresses: FC = () => {
         handleResetForm();
         await getUserSettings();
         router.refresh();
+        setLoading(false);
     };
 
     const handleDeleteAddress = async (index: number): Promise<void> => {
@@ -120,7 +125,10 @@ const UserAddresses: FC = () => {
             <Paper elevation={3} sx={{ padding: 2, borderRadius: 2 }}>
                 <Box display="flex" flexDirection="column" gap={1}>
                     {userAddresses?.map((address, index, { length }) => (
-                        <AddressBox key={`user-address-${index}`}>
+                        <AddressBox
+                            key={`user-address-${index}`}
+                            data-testid="user-address"
+                        >
                             <Box>
                                 <Typography variant="h6">
                                     {address.name}
@@ -189,12 +197,23 @@ const UserAddresses: FC = () => {
                             value={newName}
                             onChange={e => setNewName(e.target.value)}
                             type="text"
+                            slotProps={{
+                                htmlInput: {
+                                    'data-testid': 'new-address-name',
+                                },
+                            }}
                         />
                         <TextField
                             label="Address"
                             value={newAddress}
                             onChange={e => setNewAddress(e.target.value)}
                             type="text"
+                            fullWidth
+                            slotProps={{
+                                htmlInput: {
+                                    'data-testid': 'new-address-address',
+                                },
+                            }}
                         />
                         <Box
                             flex={1}
@@ -208,6 +227,12 @@ const UserAddresses: FC = () => {
                                 onChange={e => setNewPostalCode(e.target.value)}
                                 type="text"
                                 fullWidth
+                                slotProps={{
+                                    htmlInput: {
+                                        'data-testid':
+                                            'new-address-postal-code',
+                                    },
+                                }}
                             />
                             <TextField
                                 label="City"
@@ -215,6 +240,11 @@ const UserAddresses: FC = () => {
                                 onChange={e => setNewCity(e.target.value)}
                                 type="text"
                                 fullWidth
+                                slotProps={{
+                                    htmlInput: {
+                                        'data-testid': 'new-address-city',
+                                    },
+                                }}
                             />
                         </Box>
                         <Box
@@ -229,6 +259,11 @@ const UserAddresses: FC = () => {
                                 onChange={e => setNewState(e.target.value)}
                                 type="text"
                                 fullWidth
+                                slotProps={{
+                                    htmlInput: {
+                                        'data-testid': 'new-address-state',
+                                    },
+                                }}
                             />
                             <TextField
                                 label="Country"
@@ -236,13 +271,35 @@ const UserAddresses: FC = () => {
                                 onChange={e => setNewCountry(e.target.value)}
                                 type="text"
                                 fullWidth
+                                slotProps={{
+                                    htmlInput: {
+                                        'data-testid': 'new-address-country',
+                                    },
+                                }}
                             />
                         </Box>
-                        <Button variant="contained" type="submit">
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            data-testid="save-address-button"
+                            endIcon={
+                                loading ? (
+                                    <CircularProgress
+                                        size={20}
+                                        data-testid="save-address-loading"
+                                    />
+                                ) : null
+                            }
+                        >
                             Save Address
                         </Button>
                         {error ? (
-                            <Typography color="error">{error}</Typography>
+                            <Typography
+                                color="error"
+                                data-testid="save-address-error"
+                            >
+                                {error}
+                            </Typography>
                         ) : null}
                     </Box>
                 </form>

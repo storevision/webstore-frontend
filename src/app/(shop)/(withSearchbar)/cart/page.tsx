@@ -64,6 +64,7 @@ const CartPage: NextPage = async () => {
                         variant="contained"
                         color="primary"
                         disabled={disableCart}
+                        data-testid="cart-checkout"
                     >
                         Checkout ({formatMoney(totalPrice)})
                     </Button>

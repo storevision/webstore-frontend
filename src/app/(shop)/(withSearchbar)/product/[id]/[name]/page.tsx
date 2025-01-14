@@ -93,7 +93,7 @@ const ProductPage: NextPage<ProductPageProps> = async ({ params }) => {
             <Divider sx={{ marginY: 2 }} />
             <Container>
                 <Typography variant="h5">Reviews</Typography>
-                <Box marginY={1}>
+                <Box marginY={1} data-testid="reviews">
                     {reviews.map((review, index) => (
                         <UserReview key={index} review={review} />
                     ))}

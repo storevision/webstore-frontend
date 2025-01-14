@@ -88,7 +88,10 @@ const CartItem: FC<CartItemProps> = ({ initialData }) => {
     }
 
     return (
-        <StyledCard elevation={2} data-testid={`cart-item-${data.product.id}`}>
+        <StyledCard
+            elevation={2}
+            data-testid={`cart-item-card-${data.product.id}`}
+        >
             <CardMedia sx={{ minWidth: 140 }} title={data.product.name}>
                 <div
                     style={{
@@ -132,11 +135,21 @@ const CartItem: FC<CartItemProps> = ({ initialData }) => {
                         paddingY={0.5}
                         gap={1}
                     >
-                        <IconButton size="small" onClick={handleRemove}>
+                        <IconButton
+                            size="small"
+                            onClick={handleRemove}
+                            data-testid="cart-item-remove"
+                        >
                             {data.quantity > 1 ? <RemoveIcon /> : <TrashIcon />}
                         </IconButton>
-                        <Typography>{data.quantity}</Typography>
-                        <IconButton size="small" onClick={handleAdd}>
+                        <Typography data-testid="cart-item-quantity">
+                            {data.quantity}
+                        </Typography>
+                        <IconButton
+                            size="small"
+                            onClick={handleAdd}
+                            data-testid="cart-item-add"
+                        >
                             <AddIcon />
                         </IconButton>
                     </Box>
@@ -145,6 +158,7 @@ const CartItem: FC<CartItemProps> = ({ initialData }) => {
                         size="small"
                         onClick={handleDelete}
                         color="error"
+                        data-testid="cart-item-delete"
                     >
                         Delete
                     </Button>
