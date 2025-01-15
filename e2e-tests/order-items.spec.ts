@@ -10,6 +10,15 @@ test('ordering items should work', async ({ page, context }) => {
         password: `password${Date.now()}`,
     };
 
+    // all fields should not be empty
+    expect(user.email).not.toBeNull();
+    expect(user.displayName).not.toBeNull();
+    expect(user.password).not.toBeNull();
+
+    expect(user.email).not.toBe('');
+    expect(user.displayName).not.toBe('');
+    expect(user.password).not.toBe('');
+
     const reviewText = `This is a great product - ${Date.now()}`;
 
     await page.goto('http://localhost:3000/register');
@@ -21,6 +30,23 @@ test('ordering items should work', async ({ page, context }) => {
     await page.fill('[data-testid=password-input]', user.password);
 
     await page.fill('[data-testid=password-confirmation-input]', user.password);
+
+    // make sure input fields are filled
+    await expect(page.locator('[data-testid=email-input]')).toHaveValue(
+        user.email,
+    );
+
+    await expect(page.locator('[data-testid=display-name-input]')).toHaveValue(
+        user.displayName,
+    );
+
+    await expect(page.locator('[data-testid=password-input]')).toHaveValue(
+        user.password,
+    );
+
+    await expect(
+        page.locator('[data-testid=password-confirmation-input]'),
+    ).toHaveValue(user.password);
 
     await page.click('[data-testid=register-button]');
 
