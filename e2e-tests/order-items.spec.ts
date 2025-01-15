@@ -23,6 +23,29 @@ test('ordering items should work', async ({ page, context }) => {
 
     await page.goto('http://localhost:3000/register');
 
+    // assert the page title is correct
+    await expect(page.title()).resolves.toContain('Register');
+
+    // register form should be visible
+    await expect(page.getByTestId('register-form')).toBeVisible();
+
+    // email input should be visible
+    await expect(page.getByTestId('email-input')).toBeVisible();
+
+    // display name input should be visible
+    await expect(page.getByTestId('display-name-input')).toBeVisible();
+
+    // password input should be visible
+    await expect(page.getByTestId('password-input')).toBeVisible();
+
+    // password confirmation input should be visible
+    await expect(page.getByTestId('password-confirmation-input')).toBeVisible();
+
+    // submit button should be visible
+    await expect(page.getByTestId('register-button')).toBeVisible();
+
+    await expect(page.getByTestId('generic-error-message')).not.toBeVisible();
+
     await page.fill('[data-testid=email-input]', user.email);
 
     await page.fill('[data-testid=display-name-input]', user.displayName);
